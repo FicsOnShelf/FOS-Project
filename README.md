@@ -64,6 +64,23 @@ The FOS architecture was designed focusing on scalability, security, and modern 
 * **Design/UI:** Mobile-First interface with native *Dark Mode* support.
 
 ---
+## 🎨 Design & Gestão de Projeto / Project Management
+
+### **`PT-BR`** 
+
+O fluxo de trabalho, o acompanhamento das tarefas e a prototipagem das interfaces do FOS são gerenciados de forma ágil utilizando as seguintes ferramentas:
+
+* ✏️ **Protótipo de Interface (UI/UX):** [Acessar o Figma do FOS](COLOQUE_O_LINK_DO_FIGMA_AQUI)
+* 📋 **Quadro de Tarefas (Kanban):** [Acessar o Backlog no monday.com](https://chat.google.com/room/AAQA5a7KSPs/o3dXRd7vPbo/o3dXRd7vPbo?cls=10)
+
+### **`EN`**
+
+The workflow, task tracking, and interface prototyping for FOS are managed using an agile approach through the following tools:
+
+* ✏️ **Interface Prototype (UI/UX):** [Access FOS Figma](INSERT_YOUR_FIGMA_LINK_HERE)
+* 📋 **Task Board (Kanban):** [Access Backlog on monday.com](https://chat.google.com/room/AAQA5a7KSPs/o3dXRd7vPbo/o3dXRd7vPbo?cls=10)
+
+---
 
 ## 📂 Documentação Técnica / Technical Documentation
 
