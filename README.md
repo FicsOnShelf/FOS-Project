@@ -97,7 +97,7 @@ Requisitos de Software](Documentos/DERSP.pdf)
 
 All software engineering documentation and system modeling can be found in the `/docs` folder. Access the links below for more details:
 
-* [📑 Software Requirements Specification](Documentos/DERSI.pdf)
+* [📑 Software Requirements Specification](Documentos/DERSE.pdf)
 
 *(Note: Diagrams use Mermaid syntax and are rendered natively by GitHub).*
 
