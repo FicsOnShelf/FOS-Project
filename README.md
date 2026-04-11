@@ -86,11 +86,10 @@ The workflow, task tracking, and interface prototyping for FOS are managed using
 
 ### **`PT-BR`** 
 
-Toda a documentação de engenharia de software e modelagem do sistema encontra-se na pasta `/docs`. Acesse os links abaixo para mais detalhes:
+Toda a documentação de engenharia de software e modelagem do sistema encontra-se na pasta `/docs`. Acesse o link abaixo para mais detalhes:
 
-* [📑 Requisitos Funcionais e Não Funcionais](docs/requirements.md)
-* [⚙️ Regras de Negócio e Casos de Uso](docs/business_rules.md)
-* [📐 Diagramas de Arquitetura (ER, Fluxograma)](docs/diagrams.md)
+* [📑 Documento de Especificação de 
+Requisitos de Software](Documentos/DERSP.pdf)
 
 *(Nota: Os diagramas utilizam a sintaxe Mermaid e são renderizados nativamente pelo GitHub).*
 
@@ -98,9 +97,7 @@ Toda a documentação de engenharia de software e modelagem do sistema encontra-
 
 All software engineering documentation and system modeling can be found in the `/docs` folder. Access the links below for more details:
 
-* [📑 Functional and Non-Functional Requirements](docs/requirements.md)
-* [⚙️ Business Rules and Use Cases](docs/business_rules.md)
-* [📐 Architecture Diagrams (ER, Flowcharts)](docs/diagrams.md)
+* [📑 Software Requirements Specification](Documentos/DERSI.pdf)
 
 *(Note: Diagrams use Mermaid syntax and are rendered natively by GitHub).*
 
@@ -143,6 +140,3 @@ cd FOS-Project
 
 # Start the database containers
 docker-compose up -d
-
-
-
