@@ -1,16 +1,22 @@
-# Projeto Final: *Fics On Shelf*
+# 📚 FOS (Fics On Shelf) - Database & Backend
 
-O projeto **Fics On Shelf** tem como propósito desenvolver uma plataforma digital — composta por site e aplicativo — voltada para a avaliação e interação em torno de obras literárias amadoras, especialmente *fanfiction*.  
+Este é o coração do projeto **FOS**, uma plataforma social para catalogar e organizar fanfics de diferentes sites (Wattpad, AO3, Spirit, etc.). Este repositório contém a configuração do banco de dados relacional, o servidor API e os scrapers de integração.
 
-Atualmente, essas produções encontram-se dispersas em diferentes sites de publicação, apesar de alguns deles o usuário ter a possibilidade de avaliar, isso não se enquadra para **todos** os sites/aplicativos desse nincho o que, consequentemente, dificulta a centralização das avaliações e a formação de uma comunidade ativa de leitores. O **Fics On Shelf** surge como solução para esse cenário, oferecendo um espaço universal, único e organizado para reunir leitores e escritores.  
+## 🛠️ Tecnologias Utilizadas
 
-## Objetivos principais
-- **Centralização das avaliações**: reunir em um só ambiente as opiniões sobre diversas histórias, de diferentes sites/aplicativos, facilitando o acesso e a comparação.  
-- **Promoção da interação comunitária**: criar um espaço dinâmico em que os usuários possam comentar, responder e trocar experiências literárias.  
-- **Valorização das produções independentes**: dar visibilidade às obras sem fins lucrativos, fortalecendo o reconhecimento dos autores.  
-- **Estímulo à participação ativa**: incentivar leitores a contribuir com avaliações e discussões, ampliando o engajamento.  
+* **Node.js & TypeScript**: Ambiente de execução e linguagem.
+* **Prisma ORM**: Gerenciamento e modelagem do banco de dados.
+* **PostgreSQL (Neon.tech)**: Banco de dados relacional na nuvem.
+* **BCrypt**: Criptografia de senhas para segurança.
+* **Express**: Framework para criação das rotas da API.
 
-## Impacto esperado
-O projeto busca não apenas organizar e facilitar o acesso às fanfictions, mas também fomentar um ambiente colaborativo, capaz de aproximar leitores e escritores, consolidando uma comunidade literária inclusiva e participativa de forma que englobe as fancfictions de diversas fontes, visto que essas obras literárias amadoras são o "combustível" de muitas das maiores comunidades online e formam uma massa de leitores muito mais ativa e engajada do que o mercado de livros tradicionais.  
+## 🗄️ Estrutura do Banco de Dados (Schema)
 
+O banco de dados foi modelado para suportar interações sociais e catalogação detalhada:
+
+- **Usuário**: Armazena perfil, credenciais criptografadas e preferências.
+- **Fanfic**: Armazena metadados (URL, título, autor, capa) coletados via scraping.
+- **Estante**: Coleções personalizadas criadas pelos usuários (ex: "Favoritos", "Lendo agora").
+- **ItemEstante**: A "ponte" que vincula fanfics a estantes, permitindo que o usuário adicione notas, resenhas, capítulos lidos e status de leitura.
+- **Seguidor**: Sistema de autorrelacionamento para permitir que usuários sigam uns aos outros.
 
