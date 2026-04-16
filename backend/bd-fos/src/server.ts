@@ -144,6 +144,186 @@ app.post("/login", async (req, res) => {
     res.status(500).json({ erro: "Erro ao tentar fazer login." });
   }
 });
+
+// 6. Rota para CRIAR uma Estante (vinculada a um usuário)
+app.post("/estantes", async (req, res) => {
+  try {
+    const { nome, privada, usuarioId } = req.body;
+
+    const novaEstante = await prisma.estante.create({
+      data: {
+        nome: nome,
+        privada: privada || false, // Se não enviar nada, o padrão é false (pública)
+        usuarioId: Number(usuarioId), // Garante que o ID seja um número
+      },
+    });
+
+    res.status(201).json(novaEstante);
+  } catch (error) {
+    console.error("Erro ao criar estante:", error);
+    res.status(500).json({ erro: "Não foi possível criar a estante. Verifique se o usuarioId existe." });
+  }
+});
+
+// 7. Rota para LISTAR todas as estantes de um usuário específico
+app.get("/usuarios/:usuarioId/estantes", async (req, res) => {
+  try {
+    const { usuarioId } = req.params;
+
+    const estantes = await prisma.estante.findMany({
+      where: { usuarioId: Number(usuarioId) }
+    });
+
+    res.json(estantes);
+  } catch (error) {
+    res.status(500).json({ erro: "Erro ao buscar estantes." });
+  }
+});
+
+// 8. Rota para CADASTRAR uma nova Fanfic (Fica igual, pois os campos não mudaram)
+app.post("/fanfics", async (req, res) => {
+  try {
+    const { url, titulo, autor, plataforma, capa } = req.body;
+    const novaFanfic = await prisma.fanfic.create({
+      data: { url, titulo, autor, plataforma, capa }
+    });
+    res.status(201).json(novaFanfic);
+  } catch (error) {
+    res.status(500).json({ erro: "Erro ao cadastrar fanfic." });
+  }
+});
+
+// 9. Rota para ADICIONAR à Estante (Agora com Status, Nota e Resenha!)
+app.post("/estantes/adicionar", async (req, res) => {
+  try {
+    const { 
+      estanteId, 
+      fanficId, 
+      status,      // "Lido", "Lendo", etc.
+      capitulo,    // Em qual capítulo parou
+      nota,        // 1 a 5 estrelas
+      resenha,     // Comentário do usuário
+      temSpoiler   // true ou false
+    } = req.body;
+
+    const novoItem = await prisma.itemEstante.create({
+      data: {
+        estanteId: Number(estanteId),
+        fanficId: Number(fanficId),
+        status: status || "Quero Ler", // Valor padrão caso não envie
+        capitulo: capitulo ? Number(capitulo) : 0,
+        nota: nota ? Number(nota) : null,
+        resenha: resenha,
+        temSpoiler: temSpoiler || false
+      }
+    });
+
+    res.status(201).json(novoItem);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ erro: "Erro ao adicionar item à estante." });
+  }
+});
+
+// 10. Rota para EDITAR um item da estante (Ex: mudar o capítulo ou a nota)
+app.put("/itens-estante/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status, capitulo, nota, resenha, temSpoiler } = req.body;
+
+    const itemAtualizado = await prisma.itemEstante.update({
+      where: { id: Number(id) },
+      data: { status, capitulo, nota, resenha, temSpoiler }
+    });
+
+    res.json(itemAtualizado);
+  } catch (error) {
+    res.status(500).json({ erro: "Erro ao atualizar o item da estante." });
+  }
+});
+
+// 11. Rota de PERFIL COMPLETO (Usuário + Estantes + Itens)
+app.get("/usuarios/:username/perfil", async (req, res) => {
+  try {
+    const { username } = req.params;
+
+    const perfil = await prisma.usuario.findUnique({
+      where: { username: username },
+      include: {
+        estantes: {
+          include: {
+            itens: {
+              include: {
+                fanfic: true // Traz os detalhes da fanfic dentro da estante
+              }
+            }
+          }
+        }
+      }
+    });
+
+    if (!perfil) {
+      return res.status(404).json({ erro: "Usuário não encontrado." });
+    }
+
+    // Removemos a senha por segurança antes de enviar para o frontend
+    const { senha, ...dadosSemSenha } = perfil;
+    res.json(dadosSemSenha);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ erro: "Erro ao carregar perfil." });
+  }
+});
+
+// 12. Rota para SEGUIR um usuário
+app.post("/usuarios/seguir", async (req, res) => {
+  try {
+    const { seguidorId, seguindoId } = req.body; // Nomes conforme seu print
+
+    if (seguidorId === seguindoId) {
+      return res.status(400).json({ erro: "Você não pode seguir a si mesmo." });
+    }
+
+    const novoSeguimento = await prisma.seguidor.create({
+      data: {
+        seguidorId: Number(seguidorId),
+        seguindoId: Number(seguindoId),
+      },
+    });
+
+    res.status(201).json(novoSeguimento);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ erro: "Erro ao seguir. Talvez você já siga essa pessoa." });
+  }
+});
+
+// 13. Rota para ver QUEM o usuário segue e QUEM o segue
+app.get("/usuarios/:id/conexoes", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const conexoes = await prisma.usuario.findUnique({
+      where: { id: Number(id) },
+      include: {
+        // No seu Prisma, o relacionamento deve estar nomeado como 'seguindo' e 'seguidores' no model Usuario
+        seguindo: { 
+          include: { seguindo: true } // Traz os dados de quem eu estou seguindo
+        },
+        seguidores: { 
+          include: { seguidor: true } // Traz os dados de quem me segue
+        },
+      },
+    });
+
+    res.json(conexoes);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ erro: "Erro ao buscar conexões." });
+  }
+});
+
 // --- INICIALIZAÇÃO ---
 app.listen(PORT, () => {
   console.log(`Servidor rodando! Acesse: http://localhost:${PORT}`);
