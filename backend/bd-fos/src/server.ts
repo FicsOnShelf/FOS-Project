@@ -1,6 +1,7 @@
 import express from "express";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt"; // 1. Adicione isso lá no topo do arquivo, junto com as outras importações!
+import jwt from 'jsonwebtoken';
 
 const app = express();
 const prisma = new PrismaClient();
@@ -61,18 +62,26 @@ app.post("/usuarios/login", async (req, res) => {
       return res.status(404).json({ erro: "E-mail não cadastrado." });
     }
 
-    // 2. A MÁGICA: Compara a senha digitada com o hash salvo no banco
+// 2. A MÁGICA: Compara a senha digitada com o hash...
     const senhaValida = await bcrypt.compare(senha, usuario.senha);
 
     if (!senhaValida) {
       return res.status(401).json({ erro: "Senha incorreta." });
     }
 
+    // 👇 NOVIDADE: GERANDO O CRACHÁ (TOKEN JWT)
+    const token = jwt.sign(
+      { id: usuario.id, email: usuario.email }, // Dados que vão dentro do crachá
+      process.env.JWT_SECRET as string,         // A senha mestra do .env
+      { expiresIn: '7d' }                       // O crachá vale por 7 dias
+    );
+
     // 3. Deu tudo certo! Tiramos a senha por segurança e damos boas-vindas
     const { senha: _, ...usuarioSeguro } = usuario;
     res.status(200).json({ 
       mensagem: "Login realizado com sucesso!", 
-      usuario: usuarioSeguro 
+      usuario: usuarioSeguro,
+      token: token // Mandamos o crachá de volta para o Thunder Client/Figma!
     });
 
   } catch (error) {
@@ -182,6 +191,36 @@ app.post("/login", async (req, res) => {
     res.status(500).json({ erro: "Erro ao tentar fazer login." });
   }
 });
+
+import { Request, Response, NextFunction } from 'express';
+
+// ==========================================
+// MIDDLEWARE DE AUTENTICAÇÃO (O SEGURANÇA 🔒)
+// ==========================================
+const autenticarToken = (req: Request, res: Response, next: NextFunction) => {
+  // 1. Procura o token no cabeçalho da requisição
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1]; // Ele vem no formato "Bearer 123456..."
+
+  // Se não tem crachá, barra na porta!
+  if (!token) {
+    return res.status(401).json({ erro: "Acesso negado. Token não fornecido." });
+  }
+
+  try {
+    // 2. Verifica se o crachá é falso ou se já expirou
+    const secret = process.env.JWT_SECRET as string;
+    const payload = jwt.verify(token, secret);
+    
+    // 3. O crachá é válido! Colocamos os dados do usuário logado dentro da requisição
+    (req as any).usuarioLogado = payload;
+    
+    // 4. Manda a requisição seguir em frente (entrar na rota)
+    next(); 
+  } catch (error) {
+    return res.status(403).json({ erro: "Token inválido ou expirado. Faça login novamente." });
+  }
+};
 
 // 6. Rota para CRIAR uma Estante (vinculada a um usuário)
 app.post("/estantes", async (req, res) => {
@@ -359,6 +398,54 @@ app.get("/usuarios/:id/conexoes", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ erro: "Erro ao buscar conexões." });
+  }
+});
+
+// ==========================================
+// ROTA DE EXPLORAÇÃO E BUSCA
+// ==========================================
+
+app.get("/explorar", async (req, res) => {
+  try {
+    // Pegamos os filtros da URL (Ex: /explorar?titulo=harry&fandom=anime)
+    const { titulo, fandom, tag, plataforma } = req.query;
+
+    const fanfics = await prisma.fanfic.findMany({
+      where: {
+        // O "AND" garante que todos os filtros aplicados sejam respeitados ao mesmo tempo
+        AND: [
+          titulo ? { titulo: { contains: String(titulo), mode: 'insensitive' } } : {},
+          plataforma ? { plataforma: String(plataforma) } : {},
+          
+          // Filtro em Relacionamento (Muitos-para-Muitos)
+          fandom ? {
+            fandoms: {
+              some: { nome: { contains: String(fandom), mode: 'insensitive' } }
+            }
+          } : {},
+          
+          tag ? {
+            tags: {
+              some: { nome: { contains: String(tag), mode: 'insensitive' } }
+            }
+          } : {},
+        ]
+      },
+      // Incluímos os nomes das tags e fandoms na resposta para aparecer no card da fic
+      include: {
+        fandoms: true,
+        tags: true
+      },
+      orderBy: {
+        id: 'desc' // Mostra as mais recentes primeiro
+      }
+    });
+
+    res.json(fanfics);
+
+  } catch (error) {
+    console.error("Erro na busca:", error);
+    res.status(500).json({ erro: "Erro ao buscar fanfics." });
   }
 });
 
