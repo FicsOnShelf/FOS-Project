@@ -69,12 +69,13 @@ model ItemEstante {
   resenha     String?
   temSpoiler  Boolean  @default(false)
   dataLeitura DateTime @default(now())
-  
+  atualizadoEm DateTime @updatedAt
   estanteId   Int
   fanficId    Int
   
   estante     Estante @relation(fields: [estanteId], references: [id])
   fanfic      Fanfic  @relation(fields: [fanficId], references: [id])
+  
 }
 
 model Tag {

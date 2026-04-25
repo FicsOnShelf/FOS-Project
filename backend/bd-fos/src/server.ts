@@ -353,26 +353,67 @@ app.get("/usuarios/:username/perfil", async (req, res) => {
   }
 });
 
-// 12. Rota para SEGUIR um usuário
-app.post("/usuarios/seguir", async (req, res) => {
+// GET /perfil/:id
+app.get("/perfil/:id", async (req, res) => {
   try {
-    const { seguidorId, seguindoId } = req.body; // Nomes conforme seu print
+    const { id } = req.params;
 
-    if (seguidorId === seguindoId) {
+    const perfil = await prisma.usuario.findUnique({
+      where: { id: Number(id) },
+      include: {
+        estantes: {
+          include: {
+            itens: {
+              include: { fanfic: true } // Traz os detalhes da fic (título, capa)
+            }
+          }
+        },
+        _count: {
+          select: { seguidores: true, seguindo: true } // Mostra os números do social
+        }
+      }
+    });
+
+    if (!perfil) return res.status(404).json({ erro: "Usuário não encontrado" });
+
+    // Remove a senha antes de enviar
+    const { senha: _, ...dadosPublicos } = perfil;
+    res.json(dadosPublicos);
+
+  } catch (error) {
+    res.status(500).json({ erro: "Erro ao carregar perfil." });
+  }
+});
+
+// 12. Rota para SEGUIR um usuário
+// POST /usuarios/seguir
+app.post("/usuarios/seguir", autenticarToken, async (req, res) => {
+  try {
+    const { usuarioParaSeguirId } = req.body;
+    const meuId = (req as any).usuarioLogado.id; // Pego do Token JWT!
+
+    if (meuId === Number(usuarioParaSeguirId)) {
       return res.status(400).json({ erro: "Você não pode seguir a si mesmo." });
     }
 
-    const novoSeguimento = await prisma.seguidor.create({
-      data: {
-        seguidorId: Number(seguidorId),
-        seguindoId: Number(seguindoId),
-      },
+    // Verifica se já segue
+    const jaSegue = await prisma.seguidor.findFirst({
+      where: { seguidorId: meuId, seguidoId: Number(usuarioParaSeguirId) }
     });
 
-    res.status(201).json(novoSeguimento);
+    if (jaSegue) {
+      await prisma.seguidor.delete({ where: { id: jaSegue.id } });
+      return res.json({ mensagem: "Deixou de seguir." });
+    }
+
+    await prisma.seguidor.create({
+      data: { seguidorId: meuId, seguindoId: Number(usuarioParaSeguirId) }
+    });
+
+    res.json({ mensagem: "Agora você segue este usuário!" });
+
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ erro: "Erro ao seguir. Talvez você já siga essa pessoa." });
+    res.status(500).json({ erro: "Erro ao processar social." });
   }
 });
 
@@ -398,6 +439,37 @@ app.get("/usuarios/:id/conexoes", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ erro: "Erro ao buscar conexões." });
+  }
+});
+
+app.get("/feed", autenticarToken, async (req, res) => {
+  try {
+    const meuId = (req as any).usuarioLogado.id;
+
+    // 1. Acha quem eu sigo
+    const seguindo = await prisma.seguidor.findMany({
+      where: { seguidorId: meuId },
+      select: { seguindoId: true }
+    });
+
+    const idsSeguidos = seguindo.map(s => s.seguindoId);
+
+    // 2. Busca as atividades dessas pessoas
+    const atividades = await prisma.itemEstante.findMany({
+      where: {
+        estante: { usuarioId: { in: idsSeguidos } }
+      },
+      include: {
+        fanfic: true,
+        estante: { include: { usuario: true } }
+      },
+      orderBy: { atualizadoEm: 'desc' },
+      take: 20 // Apenas as 20 mais recentes
+    });
+
+    res.json(atividades);
+  } catch (error) {
+    res.status(500).json({ erro: "Erro ao carregar feed." });
   }
 });
 
