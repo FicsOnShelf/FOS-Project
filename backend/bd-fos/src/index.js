@@ -19,25 +19,58 @@ async function adicionarFic(url) {
     return;
   }
 
-  if (dadosFic) {
-    try {
-      // Salva ou Atualiza no Banco Neon
+if (dadosFic) {
+  // 👇 ADICIONE ESTA LINHA PARA VER O QUE O SCRAPER ACHOU:
+  console.log("Dados extraídos do site:", dadosFic);
+   try {
+     // Salva ou Atualiza no Banco Neon
       const ficSalva = await prisma.fanfic.upsert({
         where: { url: dadosFic.url },
-        update: { 
-          capa: dadosFic.capa // Atualiza a capa se ela tiver mudado
-        }, 
+        
+        // 👇 O QUE FAZER SE A FANFIC JÁ EXISTIR NO BANCO:
+        update: {
+          capa: dadosFic.capa, // Atualiza a capa
+          
+          // Adiciona os fandoms e tags que não existiam antes!
+          fandoms: {
+            connectOrCreate: dadosFic.fandoms?.map(nome => ({
+              where: { nome: nome },
+              create: { nome: nome }
+            })) || []
+          },
+          tags: {
+            connectOrCreate: dadosFic.tags?.map(nome => ({
+              where: { nome: nome },
+              create: { nome: nome }
+            })) || []
+          }
+        },
+
+        // 👇 O QUE FAZER SE FOR UMA FANFIC NOVA:
         create: {
           titulo: dadosFic.titulo,
           autor: dadosFic.autor,
           plataforma: dadosFic.plataforma,
           url: dadosFic.url,
-          capa: dadosFic.capa
+          capa: dadosFic.capa,
+          
+          fandoms: {
+            connectOrCreate: dadosFic.fandoms?.map(nome => ({
+              where: { nome: nome },
+              create: { nome: nome }
+            })) || []
+          },
+          tags: {
+            connectOrCreate: dadosFic.tags?.map(nome => ({
+              where: { nome: nome },
+              create: { nome: nome }
+            })) || []
+          }
         }
       });
 
       console.log("✅ Sucesso! Fanfic catalogada na nuvem.");
-      console.table(ficSalva);
+      console.log(`📖 Título: ${ficSalva.titulo} | ID: ${ficSalva.id}`);
     } catch (err) {
       console.error("❌ Erro ao salvar no Neon:", err.message);
     }
@@ -46,5 +79,5 @@ async function adicionarFic(url) {
 
 // --- TESTE MANUAL ---
 // Cole aqui um link do AO3 ou do Wattpad para testar!
-const linkDeTeste = "https://www.wattpad.com/story/274499187-caf%C3%A9-et-cigarettes-%E2%80%A2-minsung"; 
+const linkDeTeste = "https://archiveofourown.org/works/78583421/chapters/206040541"; 
 adicionarFic(linkDeTeste);

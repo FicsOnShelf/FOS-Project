@@ -18,39 +18,77 @@ app.get("/", (req, res) => {
 
 // 2. Rota para Criar Usuário (100% espelhada com o schema.prisma)
 // Rota para Criar Usuário (AGORA COM SEGURANÇA 🔒)
+// 2. Rota para Criar Usuário (AGORA COM SEGURANÇA 🔒)
 app.post("/usuarios", async (req, res) => {
   try {
-    const { 
-      username, 
-      email, 
-      senhaHash, // A senha "limpa" que vem do Thunder Client (ex: "123456")
-      nomeExibicao, 
-      bio, 
-      avatar, 
-      banner 
+    const {
+      username,
+      email,
+      senha, // Recebemos a senha "limpa" direto do Thunder Client/Figma
+      nomeExibicao,
+      bio,
+      avatar,
+      banner
     } = req.body;
 
-    // 2. Embaralhando a senha!
-    // O número 10 é o "salt", ele define a complexidade da criptografia (10 é o padrão seguro do mercado)
-    const senhaCriptografada = await bcrypt.hash(senhaHash, 10);
+    // 1. A MÁGICA DA SEGURANÇA: Criptografando a senha
+    const saltos = 10; // Nível de complexidade do embaralhamento
+    const senhaCriptografada = await bcrypt.hash(senha, saltos);
 
+    // 2. Salvando no banco de dados (Prisma)
     const novoUsuario = await prisma.usuario.create({
       data: {
         username: username,
         email: email,
-        senha: senhaCriptografada, // 3. Enviamos a senha embaralhada para o banco!
+        senha: senhaCriptografada, // Salvamos a senha embaralhada, NUNCA a limpa!
         nomeExibicao: nomeExibicao,
         bio: bio,
         avatar: avatar,
-        banner: banner,
-      },
+        banner: banner
+      }
+    });
+// 3. Rota de LOGIN
+app.post("/usuarios/login", async (req, res) => {
+  try {
+    const { email, senha } = req.body; // Recebe o e-mail e a senha "limpa" do Thunder Client
+
+    // 1. Procura se existe alguém com esse e-mail no banco
+    const usuario = await prisma.usuario.findUnique({
+      where: { email: email }
     });
 
-    res.status(201).json(novoUsuario);
-    
+    if (!usuario) {
+      return res.status(404).json({ erro: "E-mail não cadastrado." });
+    }
+
+    // 2. A MÁGICA: Compara a senha digitada com o hash salvo no banco
+    const senhaValida = await bcrypt.compare(senha, usuario.senha);
+
+    if (!senhaValida) {
+      return res.status(401).json({ erro: "Senha incorreta." });
+    }
+
+    // 3. Deu tudo certo! Tiramos a senha por segurança e damos boas-vindas
+    const { senha: _, ...usuarioSeguro } = usuario;
+    res.status(200).json({ 
+      mensagem: "Login realizado com sucesso!", 
+      usuario: usuarioSeguro 
+    });
+
+  } catch (error) {
+    console.error("Erro no login:", error);
+    res.status(500).json({ erro: "Erro interno no servidor." });
+  }
+});
+    // 3. Tirando a senha da resposta para não vazar no Thunder Client/Frontend
+    const { senha: _, ...usuarioSeguro } = novoUsuario;
+
+    // 4. Retornando sucesso!
+    res.status(201).json(usuarioSeguro);
+
   } catch (error) {
     console.error("Erro ao criar usuário:", error);
-    res.status(500).json({ erro: "Não foi possível criar o usuário no banco." });
+    res.status(500).json({ erro: "Erro ao criar usuário. Verifique se o e-mail ou username já estão em uso." });
   }
 });
 // Rota para LISTAR todos os usuários cadastrados
