@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// --- MODELOS DO SISTEMA FOS ---
+
+model Usuario {
+  id                 Int        @id @default(autoincrement())
+  email              String     @unique
+  username           String     @unique
+  nomeExibicao       String
+  senha              String // Aqui salvaremos o HASH (BCrypt)
+  bio                String?
+  avatar             String?
+  banner             String?
+  perfil_privado     Boolean?   @default(false)
+  criadoEm           DateTime   @default(now())
+  termos_aceitos     Boolean    @default(false)
+  data_aceite_termos DateTime   @default(now())
+  // Relacionamentos
+  estantes           Estante[]
+  seguindo           Seguidor[] @relation("QuemSegue")
+  seguidores         Seguidor[] @relation("SendoSeguido")
+}
+
+model Seguidor {
+  id         Int @id @default(autoincrement())
+  seguidorId Int
+  seguindoId Int
+
+  seguidor Usuario @relation("QuemSegue", fields: [seguidorId], references: [id])
+  seguindo Usuario @relation("SendoSeguido", fields: [seguindoId], references: [id])
+}
+
+model Fanfic {
+  id         Int     @id @default(autoincrement())
+  url        String  @unique
+  titulo     String
+  autor      String
+  plataforma String // Ex: Wattpad, AO3, Spirit
+  capa       String?
+  mediaNota  Float   @default(0.0)
+
+  // Relacionamentos
+  itensEstante ItemEstante[]
+  tags         Tag[]
+  fandoms      Fandom[]
+}
+
+model Estante {
+  id        Int     @id @default(autoincrement())
+  nome      String // Ex: "Lidos", "Favoritos", "Melhores de 2024"
+  privada   Boolean @default(false)
+  usuarioId Int
+
+  usuario Usuario       @relation(fields: [usuarioId], references: [id])
+  itens   ItemEstante[]
+}
+
+model ItemEstante {
+  id           Int      @id @default(autoincrement())
+  status       String // Lido, Lendo, Quero Ler, Abandonei
+  capitulo     Int      @default(0)
+  nota         Int? // 1 a 5 estrelas
+  resenha      String?
+  temSpoiler   Boolean  @default(false)
+  dataLeitura  DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+  estanteId    Int
+  fanficId     Int
+
+  estante Estante @relation(fields: [estanteId], references: [id])
+  fanfic  Fanfic  @relation(fields: [fanficId], references: [id])
+}
+
+model Tag {
+  id   Int      @id @default(autoincrement())
+  nome String   @unique
+  fics Fanfic[]
+}
+
+model Fandom {
+  id   Int      @id @default(autoincrement())
+  nome String   @unique
+  fics Fanfic[]
+}
