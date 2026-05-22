@@ -19,7 +19,10 @@ app.use(express.json());
 app.use(userRoutes);
 app.use(authRoutes);
 
-app.listen(3000, () => {
-  console.log('🚀 Servidor rodando na porta 3000');
-});
+if (require.main === module) {
+  app.listen(3000, () => {
+    console.log('🚀 Servidor rodando na porta 3000');
+  });
+}
 
+export default app;
