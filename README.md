@@ -47,9 +47,12 @@ Supported by three fundamental pillars — Automation, Organization, and Communi
 
 A arquitetura do FOS foi desenhada focando em escalabilidade, segurança e padrões modernos de mercado:
 
-* **Infraestrutura:** Docker e Docker Compose (Containerização)
-* **Banco de Dados:** PostgreSQL (Neon)
-* **Acesso a Dados:** Framework ORM (Mapeamento Objeto-Relacional) para manipulação segura e ágil dos dados
+* **Linguagem e Framework:** Node.js como runtime
+Express.js para criação das rotas HTTP
+TypeScript para tipagem estática e organização do código
+* **Banco de Dados:** Prisma ORM para abstração e acesso ao banco
+Banco configurável via .env:
+PostgreSQL
 * **Autenticação:** JWT (JSON Web Tokens) e Criptografia BCrypt para senhas
 * **Design/UI:** Interface Mobile-First com suporte nativo a *Dark Mode*
 
@@ -57,9 +60,12 @@ A arquitetura do FOS foi desenhada focando em escalabilidade, segurança e padr�
 
 The FOS architecture was designed focusing on scalability, security, and modern industry standards:
 
-* **Infrastructure:** Docker & Docker Compose (Containerization)
-* **Database:** PostgreSQL (Neon)
-* **Data Access:** ORM Framework (Object-Relational Mapping) for secure and agile data handling.
+**Language and Framework:** Node.js as runtime
+Express.js for creating HTTP routes
+TypeScript for static typing and code organization
+**Database:** Prisma ORM for abstraction and database access
+Configurable database via .env:
+PostgreSQL
 * **Authentication:** JWT (JSON Web Tokens) and BCrypt encryption for passwords.
 * **Design/UI:** Mobile-First interface with native *Dark Mode* support.
 
@@ -70,15 +76,15 @@ The FOS architecture was designed focusing on scalability, security, and modern 
 
 O fluxo de trabalho, o acompanhamento das tarefas e a prototipagem das interfaces do FOS são gerenciados de forma ágil utilizando as seguintes ferramentas:
 
-* ✏️ **Protótipo de Interface (UI/UX):** [Acessar o Figma do FOS](COLOQUE_O_LINK_DO_FIGMA_AQUI)
-* 📋 **Quadro de Tarefas (Kanban):** [Acessar o Backlog no monday.com](https://chat.google.com/room/AAQA5a7KSPs/o3dXRd7vPbo/o3dXRd7vPbo?cls=10)
+* ✏️ **Protótipo de Interface (UI/UX):** [Acessar o Figma do FOS](https://www.figma.com/site/z8exJxr1Vn1LP6IhDAVh7Y/fos_ex?node-id=0-1&t=Nr1Jjp6hT8GQx6VT-1)
+* 📋 **Quadro de Tarefas:** [Acessar o Backlog no GitHub](https://github.com/users/FicsOnShelf/projects/1/views/1)
 
 ### **`EN`**
 
 The workflow, task tracking, and interface prototyping for FOS are managed using an agile approach through the following tools:
 
-* ✏️ **Interface Prototype (UI/UX):** [Access FOS Figma](INSERT_YOUR_FIGMA_LINK_HERE)
-* 📋 **Task Board (Kanban):** [Access Backlog on monday.com](https://chat.google.com/room/AAQA5a7KSPs/o3dXRd7vPbo/o3dXRd7vPbo?cls=10)
+* ✏️ **Interface Prototype (UI/UX):** [Access FOS Figma](https://www.figma.com/site/z8exJxr1Vn1LP6IhDAVh7Y/fos_ex?node-id=0-1&t=Nr1Jjp6hT8GQx6VT-1)
+* 📋 **Task Board:** [Access Backlog on GitHub](https://github.com/users/FicsOnShelf/projects/1/views/1)
 
 ---
 
@@ -103,40 +109,50 @@ All software engineering documentation and system modeling can be found in the `
 
 ---
 
-## 🚀 Como executar o projeto localmente / Getting Started
+## 🚀 Guia de Uso: Como Utilizar o FOS
 
 ### **`PT-BR`** 
 
-> *As instruções de instalação serão detalhadas conforme a implementação do backend e frontend avançarem.*
+Para extrair o máximo da plataforma, siga os passos abaixo:
 
-Pré-requisitos básicos:
-* Docker
-* Docker Compose
+### 1. Criando sua Conta e Acessando
+* Acesse a página inicial do site e clique em **Cadastrar-se** (ou *Entrar*, se já tiver um perfil).
+* Após preencher suas credenciais, você será direcionado para o seu painel principal.
 
-```bash
-# Clone este repositório
-git clone [https://github.com/SEU-USUARIO/FOS-Project.git](https://github.com/SEU-USUARIO/FOS-Project.git)
+### 2. Organizando sua Biblioteca (Estantes)
+* Encontre a fanfiction desejada utilizando a barra de busca ou links diretos de importação.
+* Na tela da obra, clique em **Adicionar à Estante** e selecione o seu status atual (*Lendo*, *Quero Ler*, etc.).
+* Acesse o menu **Minha Biblioteca** no topo do site para visualizar seu acervo organizado e acompanhar suas métricas de progresso.
 
-# Acesse a pasta do projeto
-cd FOS-Project
+### 3. Avaliando e Escrevendo Resenhas
+* Na tela de detalhes de uma obra salva na sua estante, role até a seção de avaliação.
+* Selecione a quantidade de estrelas (de 1 a 5) e redija seu comentário crítico na caixa de texto.
+* ⚠️ *Se a sua crítica revelar partes importantes do enredo, lembre-se de marcar a caixinha "Conter Spoiler" antes de publicar para proteger outros leitores.*
+* Clique em **Publicar** para calcular a nova média global e enviar sua resenha para o feed.
 
-# Suba os containers do banco de dados
-docker-compose up -d
-```
+### 4. Engajando com a Comunidade
+* Visite a aba **Comunidade** para explorar o feed de atividades.
+* Lá, você pode ler resenhas escritas por outros usuários, deixar sua curtida (*like*) ou comentar para iniciar um debate saudável sobre o capítulo.
+
 ### **`EN`**
 
-> *Detailed installation instructions will be provided as backend and frontend implementation progresses.*
+To make the most out of the platform, follow the steps below:
 
-**Prerequisites:**
-* Docker
-* Docker Compose
+### 1. Account Setup and Access
+* Go to the homepage and click on **Sign Up** (or *Log In* if you already have an account).
+* After entering your credentials, you will be redirected to your main dashboard.
 
-```bash
-# Clone this repository
-git clone [https://github.com/YOUR-USERNAME/FOS-Project.git](https://github.com/YOUR-USERNAME/FOS-Project.git)
+### 2. Organizing Your Library (Shelves)
+* Find your desired fanfiction using the search bar or direct import links.
+* On the fanfic's details page, click **Add to Shelf** and choose your current status (*Reading*, *Want to Read*, etc.).
+* Access the **My Library** menu at the top of the site to view your organized collection and track progress metrics.
 
-# Enter the project folder
-cd FOS-Project
+### 3. Rating and Writing Reviews
+* On the details page of any fanfic saved to your shelves, scroll down to the rating section.
+* Select your star rating (from 1 to 5) and write your review in the text box.
+* ⚠️ *If your review reveals major plot points, remember to check the "Contains Spoiler" box before publishing to protect fellow readers.*
+* Click **Publish** to update the global average score and send your review to the community feed.
 
-# Start the database containers
-docker-compose up -d
+### 4. Engaging with the Community
+* Visit the **Community** tab to explore the activity feed.
+* There, you can read reviews written by other users, leave a *like*, or comment to start a healthy discussion about the chapters.
