@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fics On Shelf</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Send+Flowers&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ================================================================
+     NAVBAR
+     ================================================================ -->
+<header class="navbar">
+    <div class="logo" data-nav="home">Fics On Shelf</div>
+
+    <div class="search-bar">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+        <input type="text" placeholder="Procure uma fanfic pelo título, tag...">
+        <button class="btn-procurar">Procurar</button>
+    </div>
+
+    <!-- Links deslogado -->
+    <nav class="nav-links" id="nav-deslogado">
+        <a href="#" data-nav="home">Fanfics</a>
+        <a href="#sobre">Sobre</a>
+    </nav>
+
+    <!-- Links logado -->
+    <nav class="nav-links" id="nav-logado" hidden>
+        <a href="#" data-nav="home">Fanfics</a>
+        <a href="#" data-nav="feed">Feed</a>
+        <a href="#" data-nav="perfil">Minha Estante</a>
+    </nav>
+
+    <!-- Auth: deslogado -->
+    <div class="auth-buttons" id="auth-deslogado">
+        <button class="btn-entrar" id="btn-abrir-login">Entrar</button>
+        <button class="btn-cadastrar" id="btn-abrir-cadastro">Cadastrar-se</button>
+    </div>
+
+    <!-- Auth: logado — avatar + dropdown -->
+    <div class="nav-perfil" id="auth-logado" hidden>
+        <button class="nav-avatar-btn" id="nav-avatar-btn" aria-label="Menu do perfil">
+            <div class="nav-avatar-circulo" id="nav-avatar-circulo">
+                <img src="" alt="" class="nav-avatar-img" id="nav-avatar-img" hidden>
+                <span class="nav-avatar-inicial" id="nav-avatar-inicial"></span>
+            </div>
+            <svg class="nav-avatar-caret" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+
+        <div class="nav-dropdown" id="nav-dropdown" hidden>
+            <div class="nav-dropdown-user">
+                <span class="nav-dropdown-nome" id="nav-dropdown-nome"></span>
+                <span class="nav-dropdown-usuario" id="nav-dropdown-usuario"></span>
+            </div>
+            <div class="nav-dropdown-divider"></div>
+            <button class="nav-dropdown-item" data-nav="perfil">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Meu perfil
+            </button>
+            <button class="nav-dropdown-item" data-nav="feed">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Feed
+            </button>
+            <div class="nav-dropdown-divider"></div>
+            <button class="nav-dropdown-item nav-dropdown-sair" id="btn-sair">
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Sair
+            </button>
+        </div>
+    </div>
+</header>
+
+
+<!-- ================================================================
+     PÁGINA HOME
+     ================================================================ -->
+<div id="pagina-home">
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-glow"></div>
+        <div class="hero-content">
+            <div class="hero-badge">✦ Sua estante de fanfics</div>
+            <h1 class="hero-title">
+                Bem-vindo(a) ao<br>
+                <span class="hero-title-brand">Fics on Shelf</span>
+            </h1>
+            <p class="hero-subtitle">
+                Guarde, avalie e organize suas fanfics favoritas de qualquer plataforma.<br>
+                Crie suas prateleiras e compartilhe seu universo de leituras.
+            </p>
+            <div class="hero-actions">
+                <button class="btn-primary" id="btn-hero-estante">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    Ver minha estante
+                </button>
+                <button class="btn-secondary">Adicionar fanfic</button>
+            </div>
+            <div class="hero-stats">
+                <div class="stat"><span class="stat-number">12k+</span><span class="stat-label">Fanfics catalogadas</span></div>
+                <div class="stat-divider"></div>
+                <div class="stat"><span class="stat-number">3.4k</span><span class="stat-label">Leitores ativos</span></div>
+                <div class="stat-divider"></div>
+                <div class="stat"><span class="stat-number">8</span><span class="stat-label">Plataformas suportadas</span></div>
+            </div>
+        </div>
+        <div class="hero-shelf">
+            <div class="shelf-label">Minha estante</div>
+            <div class="shelf-books">
+                <div class="book book-1"><span>After</span></div>
+                <div class="book book-2"><span>Omegaverse</span></div>
+                <div class="book book-3"><span>BTS AU</span></div>
+                <div class="book book-4"><span>Harry P.</span></div>
+                <div class="book book-5"><span>Naruto</span></div>
+                <div class="book book-6"><span>One Piece</span></div>
+                <div class="book book-7"><span>My Hero</span></div>
+            </div>
+            <div class="shelf-plank"></div>
+            <div class="shelf-shadow"></div>
+        </div>
+    </section>
+
+    <!-- FANFICS EM DESTAQUE -->
+    <section class="featured-section">
+        <div class="section-header">
+            <div class="section-tag">✦ Populares agora</div>
+            <h2 class="section-title">Fanfics em Destaque</h2>
+            <a href="#" class="section-link">Ver todas →</a>
+        </div>
+        <div class="fanfics-grid">
+            <div class="fanfic-card">
+                <div class="fanfic-cover" style="background:linear-gradient(135deg,#4a0080,#8800cc)"><span class="fanfic-platform">AO3</span><div class="fanfic-rating-badge">★ 4.9</div></div>
+                <div class="fanfic-info"><h3 class="fanfic-title">Through the Dark</h3><p class="fanfic-author">por moonwriter_br</p><div class="fanfic-tags"><span class="tag">BTS</span><span class="tag">Angst</span><span class="tag">AU</span></div><div class="fanfic-meta"><span>124 avaliações</span><span>·</span><span>87k palavras</span></div></div>
+            </div>
+            <div class="fanfic-card">
+                <div class="fanfic-cover" style="background:linear-gradient(135deg,#002880,#0044cc)"><span class="fanfic-platform">FF.net</span><div class="fanfic-rating-badge">★ 4.7</div></div>
+                <div class="fanfic-info"><h3 class="fanfic-title">Saudade de Konoha</h3><p class="fanfic-author">por sakura_escrita</p><div class="fanfic-tags"><span class="tag">Naruto</span><span class="tag">Romance</span></div><div class="fanfic-meta"><span>89 avaliações</span><span>·</span><span>42k palavras</span></div></div>
+            </div>
+            <div class="fanfic-card">
+                <div class="fanfic-cover" style="background:linear-gradient(135deg,#800020,#cc0033)"><span class="fanfic-platform">Wattpad</span><div class="fanfic-rating-badge">★ 4.8</div></div>
+                <div class="fanfic-info"><h3 class="fanfic-title">Magia e Segredos</h3><p class="fanfic-author">por hp_always_br</p><div class="fanfic-tags"><span class="tag">Harry Potter</span><span class="tag">Fluff</span></div><div class="fanfic-meta"><span>210 avaliações</span><span>·</span><span>115k palavras</span></div></div>
+            </div>
+            <div class="fanfic-card">
+                <div class="fanfic-cover" style="background:linear-gradient(135deg,#005540,#009966)"><span class="fanfic-platform">AO3</span><div class="fanfic-rating-badge">★ 4.6</div></div>
+                <div class="fanfic-info"><h3 class="fanfic-title">Grand Line ao Pôr do Sol</h3><p class="fanfic-author">por onepiece_fã</p><div class="fanfic-tags"><span class="tag">One Piece</span><span class="tag">Aventura</span></div><div class="fanfic-meta"><span>56 avaliações</span><span>·</span><span>63k palavras</span></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ADICIONAR FANFIC -->
+    <section class="add-section">
+        <div class="add-card">
+            <div class="add-icon"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+            <div class="add-text">
+                <h3>Cole o link de qualquer fanfic</h3>
+                <p>O FOS busca automaticamente a capa, título, autor e plataforma. Funciona com AO3, Wattpad, Spirit Fanfics, FF.net e mais.</p>
+            </div>
+            <div class="add-input-group">
+                <input type="text" class="add-input" placeholder="https://archiveofourown.org/works/...">
+                <button class="btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Adicionar</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONHEÇA O FOS -->
+    <section class="about-section" id="sobre">
+        <div class="about-header">
+            <p class="about-eyebrow">Conheça o</p>
+            <h2 class="about-title-brand">FOS</h2>
+            <p class="about-lead">O FOS (Fics On Shelf) é a primeira plataforma focada na centralização e organização da experiência de leitura de fanfics.</p>
+            <p class="about-sublead">Centralizamos suas leituras do AO3, Wattpad e outras redes em um só lugar, acabando com a bagunça dos links perdidos e organizando sua biblioteca digital.</p>
+        </div>
+        <div class="features-headline"><h3>O que nos torna diferentes?</h3></div>
+
+        <div class="feature-row">
+            <div class="feature-row-icon"><div class="ficon-bg"><div class="ficon-url-badge">URL</div><svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 10l2 2 4-4"/></svg></div></div>
+            <div class="feature-row-text"><h4>Catalogação Instantânea</h4><p>Aqui você cola o link da obra e nossa tecnologia extrai automaticamente a capa, o título, o autor, a plataforma de origem e até as tags!</p></div>
+        </div>
+
+        <div class="feature-row feature-row--reverse">
+            <div class="feature-row-text"><h4>Controle de Progresso</h4><p>Marque exatamente em qual capítulo você parou. O FOS ajuda você a retomar a leitura de onde quer que tenha interrompido, independente da plataforma original da história.</p></div>
+            <div class="feature-row-icon"><div class="ficon-bg ficon-progress"><svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 12l2 2 4-4"/></svg></div></div>
+        </div>
+
+        <div class="feature-row">
+            <div class="feature-row-icon"><div class="ficon-bg ficon-org"><svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div></div>
+            <div class="feature-row-text"><h4>Organização Personalizada</h4><p>Suas fics não são apenas "links salvos". Aqui, elas são livros da sua estante. Você pode organizar por "Lendo Agora", "Favoritos de Todos os Tempos", "Para Ler Depois" ou criar estantes temáticas personalizadas!</p></div>
+        </div>
+
+        <div class="feature-banner">
+            <div class="feature-banner-text">
+                <h4>Comunidade Ativa</h4>
+                <p>O FOS é também uma rede social. Siga amigos leitores, veja o que eles estão lendo no seu Feed e contribua com a comunidade escrevendo resenhas e dando notas de 1 a 5 estrelas.</p>
+            </div>
+            <div class="feature-banner-icon"><div class="ficon-bg ficon-community"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><div class="community-stars">★★★★★</div></div></div>
+        </div>
+    </section>
+
+    <!-- CTA FINAL -->
+    <section class="cta-section">
+        <div class="cta-glow"></div>
+        <div class="cta-content">
+            <h2 class="cta-title">Pronto para montar sua estante?</h2>
+            <p class="cta-subtitle">Crie sua conta gratuitamente e comece a organizar suas fanfics hoje mesmo.</p>
+            <div class="cta-actions">
+                <button class="btn-primary btn-large" id="btn-cta-cadastro">Criar conta grátis</button>
+                <button class="btn-ghost">Explorar sem conta →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-top">
+            <div class="footer-brand">
+                <div class="footer-logo">Fics On Shelf</div>
+                <p>A sua estante de fanfics.</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-col"><h4>Plataforma</h4><a href="#">Fanfics</a><a href="#">Fandoms</a><a href="#">Feed</a><a href="#">Ranking</a></div>
+                <div class="footer-col"><h4>Conta</h4><a href="#" id="footer-link-login">Entrar</a><a href="#" id="footer-link-cadastro">Cadastrar-se</a><a href="#">Minha estante</a></div>
+                <div class="footer-col"><h4>Sobre</h4><a href="#sobre">O projeto</a><a href="#">Equipe</a><a href="#">Contato</a></div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2025 Fics On Shelf. Feito com ♥ para fãs, por fãs.</span>
+            <span>Projeto acadêmico — não comercial.</span>
+        </div>
+    </footer>
+
+</div><!-- /pagina-home -->
+
+
+<!-- ================================================================
+     PÁGINA PERFIL
+     ================================================================ -->
+<div id="pagina-perfil" hidden>
+
+    <!-- Banner + Avatar -->
+    <div class="perfil-banner-wrap">
+        <div class="perfil-banner" id="perfil-banner-display">
+            <div class="perfil-banner-overlay"></div>
+            <button class="perfil-edit-banner-btn" id="btn-editar-banner" title="Alterar banner">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Alterar banner
+            </button>
+            <input type="file" id="input-banner" accept="image/*" hidden>
+        </div>
+
+        <div class="perfil-avatar-area">
+            <div class="perfil-avatar-wrap">
+                <div class="perfil-avatar" id="perfil-avatar-display">
+                    <img src="" alt="" id="perfil-avatar-img" hidden>
+                    <span class="perfil-avatar-inicial" id="perfil-avatar-inicial"></span>
+                </div>
+                <button class="perfil-avatar-edit-btn" id="btn-editar-avatar" title="Alterar avatar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                </button>
+                <input type="file" id="input-avatar" accept="image/*" hidden>
+            </div>
+
+            <div class="perfil-info-basica">
+                <h2 class="perfil-nome" id="perfil-nome-display"></h2>
+                <span class="perfil-usuario" id="perfil-usuario-display"></span>
+                <div class="perfil-social-counts">
+                    <span><strong id="perfil-count-seguindo">0</strong> seguindo</span>
+                    <span><strong id="perfil-count-seguidores">0</strong> seguidores</span>
+                </div>
+            </div>
+
+            <div class="perfil-acoes">
+                <!-- Botão de privacidade -->
+                <button class="perfil-privacidade-btn" id="btn-privacidade" title="Configurar privacidade">
+                    <svg id="icon-privacidade-publico" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <svg id="icon-privacidade-privado" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" hidden><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <span id="label-privacidade">Público</span>
+                </button>
+                <!-- Botão editar perfil -->
+                <button class="btn-primary" id="btn-editar-perfil">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    Editar perfil
+                </button>
+            </div>
+        </div>
+    </div><!-- /perfil-banner-wrap -->
+
+    <!-- Bio -->
+    <div class="perfil-bio-wrap" id="perfil-bio-wrap">
+        <p class="perfil-bio" id="perfil-bio-display">Sem bio ainda. Clique em "Editar perfil" para adicionar.</p>
+    </div>
+
+    <!-- Conteúdo do perfil (oculto se privado) -->
+    <div id="perfil-conteudo-publico">
+
+        <!-- TOP 4 -->
+        <section class="perfil-section">
+            <div class="perfil-section-header">
+                <h3>✦ Top 4 Favoritas</h3>
+                <button class="btn-secondary btn-sm" id="btn-editar-top4">Editar Top 4</button>
+            </div>
+            <div class="top4-grid" id="top4-grid">
+                <div class="top4-slot" data-slot="0"><div class="top4-vazio"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Adicionar</span></div></div>
+                <div class="top4-slot" data-slot="1"><div class="top4-vazio"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Adicionar</span></div></div>
+                <div class="top4-slot" data-slot="2"><div class="top4-vazio"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Adicionar</span></div></div>
+                <div class="top4-slot" data-slot="3"><div class="top4-vazio"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span>Adicionar</span></div></div>
+            </div>
+        </section>
+
+        <!-- ESTATÍSTICAS -->
+        <section class="perfil-section">
+            <div class="perfil-section-header">
+                <h3>✦ Estatísticas de leitura</h3>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-card-number" id="stat-total-lidas">0</div>
+                    <div class="stat-card-label">Total lidas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-number" id="stat-total-palavras">0</div>
+                    <div class="stat-card-label">Palavras lidas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-number" id="stat-avaliacoes">0</div>
+                    <div class="stat-card-label">Avaliações feitas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-card-number" id="stat-em-andamento">0</div>
+                    <div class="stat-card-label">Em andamento</div>
+                </div>
+            </div>
+
+            <!-- Tags mais lidas -->
+            <div class="tags-mais-lidas">
+                <p class="tags-mais-lidas-titulo">Tags mais lidas</p>
+                <div class="tags-mais-lidas-lista" id="tags-mais-lidas">
+                    <span class="tag tag-destaque">Romance</span>
+                    <span class="tag tag-destaque">Angst</span>
+                    <span class="tag tag-destaque">AU</span>
+                    <span class="tag tag-destaque">BTS</span>
+                    <span class="tag tag-destaque">Fluff</span>
+                </div>
+            </div>
+
+            <!-- Gráfico de barras: plataformas -->
+            <div class="grafico-wrap">
+                <p class="grafico-titulo">Leituras por plataforma</p>
+                <div class="grafico-barras" id="grafico-plataformas">
+                    <div class="barra-item"><span class="barra-label">AO3</span><div class="barra-track"><div class="barra-fill" style="width:65%"></div></div><span class="barra-valor">65%</span></div>
+                    <div class="barra-item"><span class="barra-label">Wattpad</span><div class="barra-track"><div class="barra-fill" style="width:20%"></div></div><span class="barra-valor">20%</span></div>
+                    <div class="barra-item"><span class="barra-label">FF.net</span><div class="barra-track"><div class="barra-fill" style="width:10%"></div></div><span class="barra-valor">10%</span></div>
+                    <div class="barra-item"><span class="barra-label">Spirit</span><div class="barra-track"><div class="barra-fill" style="width:5%"></div></div><span class="barra-valor">5%</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ESTANTE DO USUÁRIO -->
+        <section class="perfil-section">
+            <div class="perfil-section-header">
+                <h3>✦ Minha Estante</h3>
+                <button class="btn-secondary btn-sm">Ver tudo</button>
+            </div>
+            <div class="estante-tabs">
+                <button class="estante-tab active">Lendo agora</button>
+                <button class="estante-tab">Já li</button>
+                <button class="estante-tab">Quero ler</button>
+                <button class="estante-tab">Abandonadas</button>
+            </div>
+            <div class="fanfics-grid">
+                <div class="fanfic-card"><div class="fanfic-cover" style="background:linear-gradient(135deg,#4a0080,#8800cc)"><span class="fanfic-platform">AO3</span><div class="fanfic-rating-badge">★ 4.9</div></div><div class="fanfic-info"><h3 class="fanfic-title">Through the Dark</h3><p class="fanfic-author">por moonwriter_br</p><div class="fanfic-tags"><span class="tag">BTS</span><span class="tag">Angst</span></div><div class="fanfic-meta"><span>Cap. 12/30</span></div></div></div>
+                <div class="fanfic-card"><div class="fanfic-cover" style="background:linear-gradient(135deg,#005540,#009966)"><span class="fanfic-platform">AO3</span><div class="fanfic-rating-badge">★ 4.6</div></div><div class="fanfic-info"><h3 class="fanfic-title">Grand Line ao Pôr do Sol</h3><p class="fanfic-author">por onepiece_fã</p><div class="fanfic-tags"><span class="tag">One Piece</span></div><div class="fanfic-meta"><span>Cap. 5/20</span></div></div></div>
+            </div>
+        </section>
+
+    </div><!-- /perfil-conteudo-publico -->
+
+    <!-- Aviso de perfil privado (visível apenas para não-seguidores) -->
+    <div id="perfil-privado-aviso" hidden>
+        <div class="privado-wrap">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <h3>Este perfil é privado</h3>
+            <p>Apenas seguidores aprovados podem ver as estatísticas e a vitrine deste perfil.</p>
+            <button class="btn-primary">Solicitar seguir</button>
+        </div>
+    </div>
+
+</div><!-- /pagina-perfil -->
+
+
+<!-- ================================================================
+     PÁGINA FEED
+     ================================================================ -->
+<div id="pagina-feed" hidden>
+    <div class="feed-layout">
+
+        <!-- Coluna principal -->
+        <div class="feed-main">
+            <div class="feed-header">
+                <h2 class="feed-titulo">Feed</h2>
+                <p class="feed-subtitulo">Atualizações recentes de quem você segue</p>
+            </div>
+
+            <!-- Cards do feed -->
+            <div class="feed-lista" id="feed-lista">
+
+                <!-- Card 1 -->
+                <article class="feed-card" data-id="1">
+                    <div class="feed-card-header">
+                        <div class="feed-avatar-mini">L</div>
+                        <div class="feed-card-meta">
+                            <span class="feed-usuario-nome">luna_reads</span>
+                            <span class="feed-acao">avaliou uma fanfic</span>
+                            <span class="feed-tempo">há 2h</span>
+                        </div>
+                    </div>
+                    <div class="feed-fanfic-ref">
+                        <div class="feed-fanfic-capa" style="background:linear-gradient(135deg,#4a0080,#8800cc)"></div>
+                        <div class="feed-fanfic-info">
+                            <p class="feed-fanfic-titulo">Through the Dark</p>
+                            <p class="feed-fanfic-autor">por moonwriter_br · AO3</p>
+                            <div class="feed-estrelas">★★★★★ <span class="feed-nota">5.0</span></div>
+                        </div>
+                    </div>
+                    <p class="feed-resenha">"Essa fic me destruiu de um jeito que eu não esperava. A construção de personagens é absurdamente boa, cada capítulo é uma montanha-russa emocional. Recomendo demais para quem curte angst com final feliz."</p>
+                    <div class="feed-card-acoes">
+                        <button class="feed-acao-btn" data-acao="curtir" data-id="1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                            <span class="feed-curtidas-count">24</span> Curtidas
+                        </button>
+                        <button class="feed-acao-btn" data-acao="comentar" data-id="1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                            <span class="feed-comentarios-count">8</span> Comentários
+                        </button>
+                    </div>
+                    <!-- Área de comentários -->
+                    <div class="feed-comentarios" id="comentarios-1" hidden>
+                        <div class="comentario-lista" id="lista-comentarios-1">
+                            <div class="comentario-item">
+                                <div class="feed-avatar-mini feed-avatar-mini--sm">K</div>
+                                <div class="comentario-corpo">
+                                    <span class="comentario-autor">kyoka_fics</span>
+                                    <p>Concordo demais! O capítulo 15 me fez chorar muito.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="comentario-input-wrap">
+                            <div class="feed-avatar-mini feed-avatar-mini--sm" id="feed-avatar-comentario-1"></div>
+                            <input type="text" class="comentario-input" placeholder="Escreva um comentário..." data-post="1">
+                            <button class="comentario-enviar" data-post="1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 2 -->
+                <article class="feed-card" data-id="2">
+                    <div class="feed-card-header">
+                        <div class="feed-avatar-mini" style="background:#e74c3c">R</div>
+                        <div class="feed-card-meta">
+                            <span class="feed-usuario-nome">rika_shipper</span>
+                            <span class="feed-acao">adicionou à estante</span>
+                            <span class="feed-tempo">há 5h</span>
+                        </div>
+                    </div>
+                    <div class="feed-fanfic-ref">
+                        <div class="feed-fanfic-capa" style="background:linear-gradient(135deg,#800020,#cc0033)"></div>
+                        <div class="feed-fanfic-info">
+                            <p class="feed-fanfic-titulo">Magia e Segredos</p>
+                            <p class="feed-fanfic-autor">por hp_always_br · Wattpad</p>
+                            <div class="feed-estrelas">★★★★☆ <span class="feed-nota">4.0</span></div>
+                        </div>
+                    </div>
+                    <p class="feed-resenha">"Finalmente terminei essa obra-prima! A rika_shipper recomendou e não decepcionou. Adorei cada página."</p>
+                    <div class="feed-card-acoes">
+                        <button class="feed-acao-btn" data-acao="curtir" data-id="2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                            <span class="feed-curtidas-count">11</span> Curtidas
+                        </button>
+                        <button class="feed-acao-btn" data-acao="comentar" data-id="2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                            <span class="feed-comentarios-count">3</span> Comentários
+                        </button>
+                    </div>
+                    <div class="feed-comentarios" id="comentarios-2" hidden>
+                        <div class="comentario-lista" id="lista-comentarios-2"></div>
+                        <div class="comentario-input-wrap">
+                            <div class="feed-avatar-mini feed-avatar-mini--sm" id="feed-avatar-comentario-2"></div>
+                            <input type="text" class="comentario-input" placeholder="Escreva um comentário..." data-post="2">
+                            <button class="comentario-enviar" data-post="2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 3 -->
+                <article class="feed-card" data-id="3">
+                    <div class="feed-card-header">
+                        <div class="feed-avatar-mini" style="background:#27ae60">M</div>
+                        <div class="feed-card-meta">
+                            <span class="feed-usuario-nome">midori_leitora</span>
+                            <span class="feed-acao">começou a ler</span>
+                            <span class="feed-tempo">há 1d</span>
+                        </div>
+                    </div>
+                    <div class="feed-fanfic-ref">
+                        <div class="feed-fanfic-capa" style="background:linear-gradient(135deg,#002880,#0044cc)"></div>
+                        <div class="feed-fanfic-info">
+                            <p class="feed-fanfic-titulo">Saudade de Konoha</p>
+                            <p class="feed-fanfic-autor">por sakura_escrita · FF.net</p>
+                        </div>
+                    </div>
+                    <div class="feed-card-acoes">
+                        <button class="feed-acao-btn" data-acao="curtir" data-id="3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                            <span class="feed-curtidas-count">6</span> Curtidas
+                        </button>
+                        <button class="feed-acao-btn" data-acao="comentar" data-id="3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                            <span class="feed-comentarios-count">1</span> Comentários
+                        </button>
+                    </div>
+                    <div class="feed-comentarios" id="comentarios-3" hidden>
+                        <div class="comentario-lista" id="lista-comentarios-3"></div>
+                        <div class="comentario-input-wrap">
+                            <div class="feed-avatar-mini feed-avatar-mini--sm" id="feed-avatar-comentario-3"></div>
+                            <input type="text" class="comentario-input" placeholder="Escreva um comentário..." data-post="3">
+                            <button class="comentario-enviar" data-post="3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                </article>
+
+            </div><!-- /feed-lista -->
+        </div><!-- /feed-main -->
+
+        <!-- Sidebar do feed -->
+        <aside class="feed-sidebar">
+            <div class="feed-sidebar-card">
+                <h4>Quem seguir</h4>
+                <div class="sugestoes-lista">
+                    <div class="sugestao-item">
+                        <div class="feed-avatar-mini" style="background:#9b59b6">A</div>
+                        <div class="sugestao-info"><span class="sugestao-nome">ariel_fanfics</span><span class="sugestao-meta">42 fanfics</span></div>
+                        <button class="btn-seguir">Seguir</button>
+                    </div>
+                    <div class="sugestao-item">
+                        <div class="feed-avatar-mini" style="background:#e67e22">T</div>
+                        <div class="sugestao-info"><span class="sugestao-nome">taekook_br</span><span class="sugestao-meta">78 fanfics</span></div>
+                        <button class="btn-seguir">Seguir</button>
+                    </div>
+                    <div class="sugestao-item">
+                        <div class="feed-avatar-mini" style="background:#16a085">S</div>
+                        <div class="sugestao-info"><span class="sugestao-nome">shipper_pro</span><span class="sugestao-meta">31 fanfics</span></div>
+                        <button class="btn-seguir">Seguir</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feed-sidebar-card">
+                <h4>Tags em alta</h4>
+                <div class="feed-tags-lista">
+                    <span class="tag">#Omegaverse</span>
+                    <span class="tag">#Angst</span>
+                    <span class="tag">#BTS</span>
+                    <span class="tag">#HarryPotter</span>
+                    <span class="tag">#Fluff</span>
+                    <span class="tag">#AU</span>
+                    <span class="tag">#Naruto</span>
+                </div>
+            </div>
+        </aside>
+
+    </div><!-- /feed-layout -->
+</div><!-- /pagina-feed -->
+
+
+<!-- ================================================================
+     MODAL EDITAR PERFIL
+     ================================================================ -->
+<div class="modal-overlay" id="modal-editar-perfil" role="dialog" aria-modal="true">
+    <div class="modal-box">
+        <button class="modal-back" id="fechar-editar-perfil">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><path d="m12 5-7 7 7 7"/></svg>
+            Voltar
+        </button>
+        <div class="modal-body">
+            <h2 class="modal-title">Editar perfil</h2>
+            <div class="form-group">
+                <label for="edit-nome">Nome de exibição</label>
+                <input type="text" id="edit-nome" placeholder="Seu nome">
+            </div>
+            <div class="form-group">
+                <label for="edit-bio">Bio</label>
+                <textarea id="edit-bio" class="edit-textarea" placeholder="Fale um pouco sobre você e seus fandoms favoritos..." maxlength="200" rows="4"></textarea>
+                <span class="input-hint"><span id="edit-bio-count">0</span>/200 caracteres</span>
+            </div>
+            <button class="btn-modal-submit" id="btn-salvar-perfil">Salvar alterações</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ================================================================
+     MODAL TOP 4
+     ================================================================ -->
+<div class="modal-overlay" id="modal-top4" role="dialog" aria-modal="true">
+    <div class="modal-box">
+        <button class="modal-back" id="fechar-top4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><path d="m12 5-7 7 7 7"/></svg>
+            Voltar
+        </button>
+        <div class="modal-body">
+            <h2 class="modal-title">Editar Top 4</h2>
+            <p class="modal-subtitle">Escolha até 4 fanfics do seu histórico para destacar no perfil.</p>
+            <div class="top4-selecao" id="top4-selecao">
+                <div class="top4-item-sel" data-index="0">
+                    <div class="top4-capa-mini" style="background:linear-gradient(135deg,#4a0080,#8800cc)"></div>
+                    <div class="top4-info-mini"><p>Through the Dark</p><span>moonwriter_br</span></div>
+                    <button class="top4-remover">✕</button>
+                </div>
+                <div class="top4-item-sel top4-item-vazio" data-index="1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <span>Selecionar fanfic</span>
+                </div>
+                <div class="top4-item-sel top4-item-vazio" data-index="2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <span>Selecionar fanfic</span>
+                </div>
+                <div class="top4-item-sel top4-item-vazio" data-index="3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    <span>Selecionar fanfic</span>
+                </div>
+            </div>
+            <button class="btn-modal-submit" id="btn-salvar-top4">Salvar Top 4</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ================================================================
+     MODAIS LOGIN / CADASTRO (mantidos da versão anterior)
+     ================================================================ -->
+<div class="modal-overlay" id="modal-login" role="dialog" aria-modal="true" aria-labelledby="login-titulo">
+    <div class="modal-box">
+        <button class="modal-back" id="fechar-login">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><path d="m12 5-7 7 7 7"/></svg>
+            Voltar
+        </button>
+        <div class="modal-body">
+            <h2 class="modal-title" id="login-titulo">Entrar na conta</h2>
+            <p class="modal-subtitle">Bom te ver de novo! Por favor, preencha seus dados de acesso.</p>
+            <div id="login-feedback" class="form-feedback" aria-live="polite"></div>
+            <div class="form-group">
+                <label for="login-identificador">E-mail ou Nome do Usuário</label>
+                <input type="text" id="login-identificador" autocomplete="username" placeholder="seu@email.com ou @usuario">
+            </div>
+            <div class="form-group">
+                <label for="login-senha">Senha</label>
+                <div class="input-password-wrap">
+                    <input type="password" id="login-senha" autocomplete="current-password" placeholder="••••••••">
+                    <button type="button" class="toggle-password" data-target="login-senha">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="form-row-space">
+                <a href="#" class="form-link">Esqueci minha senha</a>
+                <label class="checkbox-label"><input type="checkbox" id="login-lembrar"> Lembrar-me</label>
+            </div>
+            <button class="btn-modal-submit" id="btn-login-submit">
+                <span class="btn-text">Entrar</span>
+                <span class="btn-spinner" hidden><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg></span>
+            </button>
+            <p class="modal-switch">Não tem uma conta? <button type="button" class="link-btn" id="switch-para-cadastro">Cadastre-se aqui</button></p>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-cadastro" role="dialog" aria-modal="true" aria-labelledby="cadastro-titulo">
+    <div class="modal-box modal-box-wide">
+        <button class="modal-back" id="fechar-cadastro">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/><path d="m12 5-7 7 7 7"/></svg>
+            Voltar
+        </button>
+        <div class="modal-split">
+            <div class="modal-illustration" aria-hidden="true">
+                <div class="ill-shelf-wrap"><div class="ill-books"><div class="ill-book ill-b1"></div><div class="ill-book ill-b2"></div><div class="ill-book ill-b3"></div><div class="ill-book ill-b4"></div><div class="ill-book ill-b5"></div></div><div class="ill-plank"></div></div>
+                <p class="ill-caption">Sua próxima estante<br>começa aqui ✦</p>
+            </div>
+            <div class="modal-body">
+                <h2 class="modal-title" id="cadastro-titulo">Crie seu cadastro</h2>
+                <div id="cadastro-feedback" class="form-feedback" aria-live="polite"></div>
+                <div class="form-group"><label for="cad-email">E-mail:</label><input type="email" id="cad-email" autocomplete="email" placeholder="seu@email.com"></div>
+                <div class="form-group"><label for="cad-usuario">Nome de Usuário:</label><input type="text" id="cad-usuario" autocomplete="username" placeholder="@seunome"></div>
+                <div class="form-group"><label for="cad-nome">Nome:</label><input type="text" id="cad-nome" autocomplete="name" placeholder="Seu nome completo"></div>
+                <div class="form-group">
+                    <label for="cad-senha">Senha:</label>
+                    <div class="input-password-wrap">
+                        <input type="password" id="cad-senha" autocomplete="new-password" placeholder="Mínimo 8 caracteres">
+                        <button type="button" class="toggle-password" data-target="cad-senha"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                    </div>
+                    <span class="input-hint">Mínimo de 8 caracteres, incluindo letras e números</span>
+                </div>
+                <div class="form-group">
+                    <label for="cad-confirmar">Confirmar Senha:</label>
+                    <div class="input-password-wrap">
+                        <input type="password" id="cad-confirmar" autocomplete="new-password" placeholder="Repita a senha">
+                        <button type="button" class="toggle-password" data-target="cad-confirmar"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                    </div>
+                </div>
+                <label class="checkbox-label checkbox-termos"><input type="checkbox" id="cad-termos"> Concordo com os <a href="#" class="form-link">Termos de Uso</a> e <a href="#" class="form-link">Política de Privacidade</a></label>
+                <button class="btn-modal-submit" id="btn-cadastro-submit">
+                    <span class="btn-text">Criar conta</span>
+                    <span class="btn-spinner" hidden><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg></span>
+                </button>
+                <p class="modal-switch">Já tem uma conta? <button type="button" class="link-btn" id="switch-para-login">Entrar</button></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
