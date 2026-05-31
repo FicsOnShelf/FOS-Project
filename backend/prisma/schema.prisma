@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Usuario {
+  id                 Int        @id @default(autoincrement())
+  email              String     @unique
+  username           String     @unique
+  nomeExibicao       String
+  senha              String
+  bio                String?
+  avatar             String?
+  banner             String?
+  perfil_privado     Boolean    @default(false)
+  criadoEm           DateTime   @default(now())
+  termos_aceitos     Boolean    @default(false)
+  data_aceite_termos DateTime   @default(now())
+  estantes           Estante[]
+  seguindo           Seguidor[] @relation("QuemSegue")
+  seguidores         Seguidor[] @relation("SendoSeguido")
+}
+
+model Seguidor {
+  id         Int     @id @default(autoincrement())
+  seguidorId Int
+  seguindoId Int
+  seguidor   Usuario @relation("QuemSegue", fields: [seguidorId], references: [id])
+  seguindo   Usuario @relation("SendoSeguido", fields: [seguindoId], references: [id])
+}
+
+model Fanfic {
+  id           Int           @id @default(autoincrement())
+  url          String        @unique
+  titulo       String
+  autor        String
+  plataforma   String
+  capa         String?
+  mediaNota    Float         @default(0.0)
+  itensEstante ItemEstante[]
+  fandoms      Fandom[]      @relation("FandomToFanfic")
+  tags         Tag[]         @relation("FanficToTag")
+}
+
+model Estante {
+  id        Int           @id @default(autoincrement())
+  nome      String
+  privada   Boolean       @default(false)
+  usuarioId Int
+  usuario   Usuario       @relation(fields: [usuarioId], references: [id])
+  itens     ItemEstante[]
+}
+
+model ItemEstante {
+  id           Int      @id @default(autoincrement())
+  status       String
+  capitulo     Int      @default(0)
+  nota         Int?
+  resenha      String?
+  temSpoiler   Boolean  @default(false)
+  dataLeitura  DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+  estanteId    Int
+  fanficId     Int
+  estante      Estante  @relation(fields: [estanteId], references: [id])
+  fanfic       Fanfic   @relation(fields: [fanficId], references: [id])
+}
+
+model Tag {
+  id   Int      @id @default(autoincrement())
+  nome String   @unique
+  fics Fanfic[] @relation("FanficToTag")
+}
+
+model Fandom {
+  id   Int      @id @default(autoincrement())
+  nome String   @unique
+  fics Fanfic[] @relation("FandomToFanfic")
+}
