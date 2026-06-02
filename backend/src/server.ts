@@ -1,11 +1,12 @@
 ﻿import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import { prisma } from './infrastructure/db/prismaClient';
 
 dotenv.config();
 const app = express();
 app.use(express.json());
-
+app.use(cors({ origin: '*'}));
 // Rotas
 import fanficRoutes from './presentation/http/routes/fanfic.routes';
 import authRoutes from './presentation/http/routes/auth.routes';
