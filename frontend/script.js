@@ -16,7 +16,7 @@
 
 /* ── 1. CONFIG ───────────────────────────────────────────────── */
 const API = {
-    BASE_URL: 'http://localhost:3000',
+    BASE_URL: 'https://fos-backend-o0el.onrender.com',
 
     // Auth
     LOGIN:    '/login',
