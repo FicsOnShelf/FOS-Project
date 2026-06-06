@@ -50,9 +50,10 @@ A arquitetura do FOS foi desenhada focando em escalabilidade, segurança e padr�
 * **Linguagem e Framework:** Node.js como runtime
 Express.js para criação das rotas HTTP
 TypeScript para tipagem estática e organização do código
-* **Banco de Dados:** Prisma ORM para abstração e acesso ao banco
-Banco configurável via .env:
-PostgreSQL
+* **Banco de Dados:**
+  * Prisma ORM para abstração e acesso ao banco
+  * Banco configurável via `.env`:
+    * PostgreSQL
 * **Autenticação:** JWT (JSON Web Tokens) e Criptografia BCrypt para senhas
 * **Design/UI:** Interface Mobile-First com suporte nativo a *Dark Mode*
 
@@ -63,9 +64,10 @@ The FOS architecture was designed focusing on scalability, security, and modern 
 **Language and Framework:** Node.js as runtime
 Express.js for creating HTTP routes
 TypeScript for static typing and code organization
-**Database:** Prisma ORM for abstraction and database access
-Configurable database via .env:
-PostgreSQL
+* **Database:** 
+  * Prisma ORM for abstraction and database access
+  * Configurable database via .env:
+     * PostgreSQL
 * **Authentication:** JWT (JSON Web Tokens) and BCrypt encryption for passwords.
 * **Design/UI:** Mobile-First interface with native *Dark Mode* support.
 
