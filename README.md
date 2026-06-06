@@ -94,8 +94,7 @@ The workflow, task tracking, and interface prototyping for FOS are managed using
 
 Toda a documentação de engenharia de software e modelagem do sistema encontra-se na pasta `/docs`. Acesse o link abaixo para mais detalhes:
 
-* [📑 Documento de Especificação de 
-Requisitos de Software](Documentos/DERSP.pdf)
+* [📑 Documento de Especificação de Requisitos de Software](Documentos/DERSP.pdf)
 
 *(Nota: Os diagramas utilizam a sintaxe Mermaid e são renderizados nativamente pelo GitHub).*
 
@@ -109,7 +108,17 @@ All software engineering documentation and system modeling can be found in the `
 
 ---
 
-## 🚀 Guia de Uso: Como Utilizar o FOS
+## 🗂 Planejamento de Atividades: Evidências
+
+### **`PT-BR`** 
+
+Aqui segue o documento detalhado de como foi realizado o planejamento da produção do FOS e suas respectivas evidências:
+
+* [📑 Documento de Evidências do Projeto](Documentos/Evidências%20do%20Projeto.pdf)
+
+---
+
+## 🚀 Guia de Uso: Como Utilizar o FOS / User Guide: How to Use FOS
 
 ### **`PT-BR`** 
 

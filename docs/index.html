@@ -11,15 +11,13 @@
 </head>
 <body>
 
-<!-- ================================================================
-     NAVBAR
-     ================================================================ -->
 <header class="navbar">
     <div class="logo" data-nav="home">Fics On Shelf</div>
 
     <div class="search-bar">
         <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
         </svg>
         <input type="text" placeholder="Procure uma fanfic pelo título, tag...">
         <button class="btn-procurar">Procurar</button>
@@ -32,8 +30,9 @@
     </nav>
 
     <!-- Links logado -->
-    <nav class="nav-links" id="nav-logado" hidden>
+    <nav class="nav-links" id="nav-logado" hidden> <!-- só aparece isso para qnd o ususario for logado -->
         <a href="#" data-nav="home">Fanfics</a>
+        <a href="#sobre">Sobre</a>
         <a href="#" data-nav="feed">Feed</a>
         <a href="#" data-nav="perfil">Minha Estante</a>
     </nav>
@@ -77,10 +76,6 @@
     </div>
 </header>
 
-
-<!-- ================================================================
-     PÁGINA HOME
-     ================================================================ -->
 <div id="pagina-home">
 
     <!-- HERO -->
@@ -98,7 +93,9 @@
             </p>
             <div class="hero-actions">
                 <button class="btn-primary" id="btn-hero-estante">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                    </svg>
                     Ver minha estante
                 </button>
                 <button class="btn-secondary">Adicionar fanfic</button>
@@ -164,7 +161,10 @@
             </div>
             <div class="add-input-group">
                 <input type="text" class="add-input" placeholder="https://archiveofourown.org/works/...">
-                <button class="btn-primary"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Adicionar</button>
+                <button class="btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Adicionar
+                </button>
             </div>
         </div>
     </section>
@@ -199,7 +199,8 @@
                 <h4>Comunidade Ativa</h4>
                 <p>O FOS é também uma rede social. Siga amigos leitores, veja o que eles estão lendo no seu Feed e contribua com a comunidade escrevendo resenhas e dando notas de 1 a 5 estrelas.</p>
             </div>
-            <div class="feature-banner-icon"><div class="ficon-bg ficon-community"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><div class="community-stars">★★★★★</div></div></div>
+            <div class="feature-banner-icon"><div class="ficon-bg ficon-community">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><div class="community-stars">★★★★★</div></div></div>
         </div>
     </section>
 
@@ -211,7 +212,7 @@
             <p class="cta-subtitle">Crie sua conta gratuitamente e comece a organizar suas fanfics hoje mesmo.</p>
             <div class="cta-actions">
                 <button class="btn-primary btn-large" id="btn-cta-cadastro">Criar conta grátis</button>
-                <button class="btn-ghost">Explorar sem conta →</button>
+                <button class="btn-ghost">Entrar na sua conta →</button>
             </div>
         </div>
     </section>
@@ -235,12 +236,8 @@
         </div>
     </footer>
 
-</div><!-- /pagina-home -->
+</div>
 
-
-<!-- ================================================================
-     PÁGINA PERFIL
-     ================================================================ -->
 <div id="pagina-perfil" hidden>
 
     <!-- Banner + Avatar -->
@@ -279,7 +276,10 @@
                 <!-- Botão de privacidade -->
                 <button class="perfil-privacidade-btn" id="btn-privacidade" title="Configurar privacidade">
                     <svg id="icon-privacidade-publico" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                    <svg id="icon-privacidade-privado" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" hidden><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    
+                    <svg id="icon-privacidade-privado" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" hidden><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
                     <span id="label-privacidade">Público</span>
                 </button>
                 <!-- Botão editar perfil -->
@@ -391,12 +391,8 @@
         </div>
     </div>
 
-</div><!-- /pagina-perfil -->
+</div>
 
-
-<!-- ================================================================
-     PÁGINA FEED
-     ================================================================ -->
 <div id="pagina-feed" hidden>
     <div class="feed-layout">
 
@@ -581,12 +577,8 @@
         </aside>
 
     </div><!-- /feed-layout -->
-</div><!-- /pagina-feed -->
+</div>
 
-
-<!-- ================================================================
-     MODAL EDITAR PERFIL
-     ================================================================ -->
 <div class="modal-overlay" id="modal-editar-perfil" role="dialog" aria-modal="true">
     <div class="modal-box">
         <button class="modal-back" id="fechar-editar-perfil">
@@ -609,10 +601,6 @@
     </div>
 </div>
 
-
-<!-- ================================================================
-     MODAL TOP 4
-     ================================================================ -->
 <div class="modal-overlay" id="modal-top4" role="dialog" aria-modal="true">
     <div class="modal-box">
         <button class="modal-back" id="fechar-top4">
@@ -646,10 +634,6 @@
     </div>
 </div>
 
-
-<!-- ================================================================
-     MODAIS LOGIN / CADASTRO (mantidos da versão anterior)
-     ================================================================ -->
 <div class="modal-overlay" id="modal-login" role="dialog" aria-modal="true" aria-labelledby="login-titulo">
     <div class="modal-box">
         <button class="modal-back" id="fechar-login">

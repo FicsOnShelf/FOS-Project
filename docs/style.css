@@ -1,8 +1,3 @@
-/* ============================================================
-   FICS ON SHELF — style.css
-   ============================================================ */
-
-/* ── VARIÁVEIS & RESET ──────────────────────────────────────── */
 :root {
     --bg:          #19002C;
     --bg-mid:      #220040;
@@ -38,8 +33,6 @@ a { text-decoration:none; color:inherit; }
 button { cursor:pointer; font-family:inherit; }
 img { display:block; max-width:100%; }
 
-
-/* ── NAVBAR ─────────────────────────────────────────────────── */
 .navbar {
     display: flex;
     align-items: center;
@@ -100,7 +93,6 @@ img { display:block; max-width:100%; }
 
 .auth-buttons { display:flex; align-items:center; gap:10px; flex-shrink:0; }
 
-/* Avatar dropdown */
 .nav-perfil { position:relative; flex-shrink:0; }
 .nav-avatar-btn {
     display: flex;
@@ -168,8 +160,6 @@ img { display:block; max-width:100%; }
 .nav-dropdown-sair { color: #ff8080; }
 .nav-dropdown-sair:hover { background: rgba(255,80,80,0.1); color: #ff8080; }
 
-
-/* ── BOTÕES GLOBAIS ─────────────────────────────────────────── */
 .btn-procurar { background-color:var(--accent); color:var(--bg); border:none; border-radius:6px; padding:6px 14px; font-weight:700; font-size:13px; white-space:nowrap; transition:background var(--transition),transform var(--transition); }
 .btn-procurar:hover { background-color:#c880ff; transform:scale(1.03); }
 
@@ -191,8 +181,6 @@ img { display:block; max-width:100%; }
 .btn-ghost:hover { color:var(--accent); }
 .btn-large { padding:15px 32px; font-size:16px; }
 
-
-/* ── HERO ────────────────────────────────────────────────────── */
 .hero { position:relative; display:flex; align-items:center; justify-content:space-between; gap:60px; padding:80px 80px 100px; overflow:hidden; min-height:80vh; }
 .hero-glow { position:absolute; top:-200px; left:-200px; width:700px; height:700px; background:radial-gradient(circle,rgba(161,0,255,0.18) 0%,transparent 70%); pointer-events:none; z-index:0; }
 .hero-content { position:relative; z-index:1; max-width:560px; animation:fadeUp 0.7s ease both; }
@@ -223,8 +211,6 @@ img { display:block; max-width:100%; }
 .shelf-plank { height:14px; background:linear-gradient(180deg,#4a2060,#2d1040); border-radius:0 0 6px 6px; border-top:2px solid rgba(218,155,255,0.3); }
 .shelf-shadow { height:20px; background:radial-gradient(ellipse,rgba(0,0,0,0.5) 0%,transparent 70%); margin-top:4px; }
 
-
-/* ── FANFICS EM DESTAQUE ─────────────────────────────────────── */
 .featured-section { padding:80px; background:linear-gradient(180deg,var(--bg) 0%,var(--bg-mid) 100%); }
 .section-header { display:flex; align-items:flex-end; gap:16px; margin-bottom:40px; flex-wrap:wrap; }
 .section-tag { display:inline-block; background:var(--accent-dim); color:var(--accent); border:1px solid var(--border); border-radius:999px; padding:4px 14px; font-size:12px; font-weight:600; letter-spacing:0.05em; align-self:flex-start; margin-top:4px; }
@@ -244,8 +230,6 @@ img { display:block; max-width:100%; }
 .tag { background:var(--accent-dim); color:var(--accent); border-radius:999px; padding:2px 10px; font-size:11px; font-weight:600; }
 .fanfic-meta { display:flex; gap:6px; font-size:12px; color:var(--text-muted); margin-top:4px; }
 
-
-/* ── ADD / SOBRE / CTA / FOOTER (mantidos) ───────────────────── */
 .add-section { padding:0 80px 80px; background:var(--bg-mid); }
 .add-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-lg); padding:40px 48px; display:flex; align-items:center; gap:32px; flex-wrap:wrap; }
 .add-icon { width:64px; height:64px; background:var(--accent-dim); border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; color:var(--accent); flex-shrink:0; }
@@ -331,7 +315,6 @@ img { display:block; max-width:100%; }
 }
 .perfil-edit-banner-btn:hover { background:rgba(0,0,0,0.75); }
 
-/* Área avatar + info */
 .perfil-avatar-area {
     display: flex;
     align-items: flex-end;
@@ -399,16 +382,13 @@ img { display:block; max-width:100%; }
 .perfil-privacidade-btn:hover { background:rgba(218,155,255,0.22); color:var(--text); }
 .perfil-privacidade-btn.privado { color:#ffcc88; border-color:rgba(255,180,80,0.4); }
 
-/* Bio */
 .perfil-bio-wrap { padding:0 60px 28px; max-width:700px; }
 .perfil-bio { font-size:15px; color:var(--text-muted); line-height:1.7; }
 
-/* Seções do perfil */
 .perfil-section { padding:36px 60px; border-top:1px solid var(--border); }
 .perfil-section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px; }
 .perfil-section-header h3 { font-family:'Lora',serif; font-size:20px; font-weight:600; color:var(--text); }
 
-/* Top 4 */
 .top4-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
 .top4-slot { border-radius:var(--radius-md); overflow:hidden; aspect-ratio:2/3; background:var(--bg-card); border:1px solid var(--border); transition:border-color var(--transition); }
 .top4-slot:hover { border-color:var(--accent); }
@@ -418,19 +398,16 @@ img { display:block; max-width:100%; }
 .top4-capa-bg { width:100%; height:100%; position:relative; }
 .top4-capa-bg::after { content:attr(data-titulo); position:absolute; bottom:0; left:0; right:0; padding:20px 10px 10px; background:linear-gradient(to top,rgba(0,0,0,0.8),transparent); color:#fff; font-size:12px; font-weight:700; }
 
-/* Estatísticas */
 .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px; }
 .stat-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-md); padding:24px 20px; text-align:center; }
 .stat-card-number { font-family:'Lora',serif; font-size:32px; font-weight:600; color:var(--accent); margin-bottom:6px; }
 .stat-card-label { font-size:13px; color:var(--text-muted); font-weight:500; }
 
-/* Tags mais lidas */
 .tags-mais-lidas { margin-bottom:28px; }
 .tags-mais-lidas-titulo { font-size:13px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:12px; }
 .tags-mais-lidas-lista { display:flex; flex-wrap:wrap; gap:8px; }
 .tag-destaque { font-size:13px; padding:5px 14px; }
 
-/* Gráfico de barras */
 .grafico-wrap { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-md); padding:24px; }
 .grafico-titulo { font-size:14px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.07em; margin-bottom:18px; }
 .grafico-barras { display:flex; flex-direction:column; gap:12px; }
@@ -440,13 +417,11 @@ img { display:block; max-width:100%; }
 .barra-fill { height:100%; background:linear-gradient(90deg,#DA9BFF,#a855f7); border-radius:999px; transition:width 1s ease; }
 .barra-valor { font-size:12px; color:var(--text-muted); width:36px; flex-shrink:0; }
 
-/* Tabs estante */
 .estante-tabs { display:flex; gap:4px; margin-bottom:20px; border-bottom:1px solid var(--border); padding-bottom:0; }
 .estante-tab { background:transparent; border:none; padding:10px 18px; font-size:14px; font-weight:600; color:var(--text-muted); border-bottom:2px solid transparent; margin-bottom:-1px; transition:color var(--transition),border-color var(--transition); cursor:pointer; }
 .estante-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
 .estante-tab:hover { color:var(--text); }
 
-/* Perfil privado */
 .privado-wrap { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; padding:80px 40px; text-align:center; color:var(--text-muted); }
 .privado-wrap h3 { font-family:'Lora',serif; font-size:22px; color:var(--text); }
 .privado-wrap p { max-width:360px; font-size:15px; line-height:1.65; }
@@ -471,7 +446,6 @@ img { display:block; max-width:100%; }
 
 .feed-lista { display:flex; flex-direction:column; gap:20px; }
 
-/* Card do feed */
 .feed-card {
     background: var(--bg-card);
     border: 1px solid var(--border);
@@ -512,7 +486,6 @@ img { display:block; max-width:100%; }
 
 .feed-resenha { font-size:14px; color:var(--text-muted); line-height:1.7; margin-bottom:16px; font-style:italic; }
 
-/* Ações do card */
 .feed-card-acoes { display:flex; gap:16px; padding-top:14px; border-top:1px solid var(--border); }
 .feed-acao-btn {
     display: flex;
@@ -532,7 +505,6 @@ img { display:block; max-width:100%; }
 .feed-acao-btn.curtido { color:#ff6b9d; }
 .feed-acao-btn.curtido svg { fill:#ff6b9d; stroke:#ff6b9d; }
 
-/* Comentários */
 .feed-comentarios { margin-top:16px; border-top:1px solid var(--border); padding-top:16px; }
 .comentario-lista { display:flex; flex-direction:column; gap:12px; margin-bottom:16px; }
 .comentario-item { display:flex; gap:10px; }
@@ -545,7 +517,6 @@ img { display:block; max-width:100%; }
 .comentario-enviar { background:var(--accent); color:var(--bg); border:none; border-radius:var(--radius-sm); width:36px; height:36px; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background var(--transition); }
 .comentario-enviar:hover { background:#c880ff; }
 
-/* Sidebar feed */
 .feed-sidebar { display:flex; flex-direction:column; gap:20px; }
 .feed-sidebar-card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius-md); padding:20px; }
 .feed-sidebar-card h4 { font-family:'Lora',serif; font-size:16px; font-weight:600; color:var(--text); margin-bottom:16px; }
@@ -654,7 +625,6 @@ img { display:block; max-width:100%; }
 .link-btn { background:transparent; border:none; color:var(--accent); font-size:13px; font-weight:700; padding:0; text-decoration:underline; cursor:pointer; }
 .link-btn:hover { color:#c880ff; }
 
-/* Modal Top 4 */
 .top4-selecao { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
 .top4-item-sel { display:flex; align-items:center; gap:14px; background:var(--bg-mid); border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px; cursor:pointer; transition:border-color var(--transition); }
 .top4-item-sel:hover { border-color:var(--accent); }
@@ -666,14 +636,14 @@ img { display:block; max-width:100%; }
 .top4-remover:hover { color:#ff8080; }
 
 
-/* ── ANIMAÇÕES ───────────────────────────────────────────────── */
+/* ANIMAÇÕES  */
 @keyframes fadeUp {
     from { opacity:0; transform:translateY(24px); }
     to   { opacity:1; transform:translateY(0); }
 }
 
 
-/* ── RESPONSIVO ──────────────────────────────────────────────── */
+/* RESPONSIVO  */
 @media (max-width:1100px) {
     .hero { flex-direction:column; padding:60px 40px 80px; text-align:center; }
     .hero-stats { justify-content:center; }

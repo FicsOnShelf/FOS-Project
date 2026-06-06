@@ -1,49 +1,30 @@
 'use strict';
 
-/* ================================================================
-   FICS ON SHELF — script.js  (versão integrada com backend)
-   Módulos:
-     1. CONFIG (API + helpers HTTP)
-     2. ESTADO da aplicação + persistência de sessão
-     3. ROTEADOR (SPA: home / perfil / feed)
-     4. AUTH (login, cadastro, sair, avatar na navbar)
-     5. PERFIL (banner, avatar, bio, privacidade, top4, stats, estante)
-     6. FANFIC (busca, adicionar via URL/scraping)
-     7. FEED (curtir, comentar, seguir)
-     8. HELPERS (modal, feedback, loading, senha)
-   ================================================================ */
-
-
-/* ── 1. CONFIG ───────────────────────────────────────────────── */
+/* localização das rotas de comunicação com o backend  */
 const API = {
     BASE_URL: 'https://fos-backend-o0el.onrender.com',
 
-    // Auth
     LOGIN:    '/login',
     CADASTRO: '/register',
 
-    // Usuários
     USUARIOS:         '/usuarios',
     USUARIO_POR_ID:   (id)          => `/usuarios/${id}`,
 
-    // Fanfics
     FANFIC:           '/fanfic',
     FANFIC_BUSCA:     '/fanfic/search',
     FANFIC_POR_ID:    (id)          => `/fanfics/${id}`,
     FANFIC_REFRESH:   (id)          => `/fanfics/${id}`,
     FANFIC_DELETAR:   (id)          => `/fanfics/${id}`,
 
-    // Estantes
-    ESTANTES:                       '/estantes',
+    ESTANTES:                          '/estantes',
     ESTANTE_ITENS:    (estanteId)   => `/estantes/${estanteId}/itens`,
     ESTANTE_ITEM:     (itemId)      => `/estantes/itens/${itemId}`,
     USUARIO_ESTANTES: (usuarioId)   => `/usuarios/${usuarioId}/estantes`,
 
-    // Social
-    SEGUIR:           '/seguir',
+    SEGUIR: '/seguir',
 };
 
-/** Retorna headers padrão, com Authorization se houver token */
+/** função dela é anexar o seu "crachá de acesso" (Token) em toda requisição que precisa de segurança para comprovar q o usuario esta logado */
 function authHeaders() {
     const token = sessionStorage.getItem('fos_token');
     const h = { 'Content-Type': 'application/json' };
@@ -52,11 +33,11 @@ function authHeaders() {
 }
 
 /** Wrapper HTTP genérico — retorna { ok, status, data } */
-async function api(method, path, body) {
+async function api(method, path, body) /* Wrapper HTTP q guarda o mesmo codigo de envio para diferentes ações*/{
     const opts = { method, headers: authHeaders() };
     if (body !== undefined) opts.body = JSON.stringify(body);
     const res  = await fetch(`${API.BASE_URL}${path}`, opts);
-    // 204 No Content não tem corpo
+
     const data = res.status === 204 ? null : await res.json().catch(() => null);
     return { ok: res.ok, status: res.status, data };
 }
@@ -69,11 +50,11 @@ const http = {
 };
 
 
-/* ── 2. ESTADO ───────────────────────────────────────────────── */
+/* ESTADO GLOBAL da aplicação*/
 let app = {
-    usuario: null,       // { id, nome, nomeUsuario, email, avatar, bio, privado, top4: [] }
+    usuario: null,       
     paginaAtual: 'home',
-    estantes: [],        // cache das estantes do usuário logado
+    estantes: [],        
 };
 
 /** Restaura sessão do sessionStorage (JWT + dados do usuário) */
@@ -86,13 +67,11 @@ function restaurarSessao() {
     } catch { /* sessão corrompida, ignora */ }
 }
 
-/** Persiste sessão após login/cadastro */
 function persistirSessao(token, usuario) {
     sessionStorage.setItem('fos_token',   token);
     sessionStorage.setItem('fos_usuario', JSON.stringify(usuario));
 }
 
-/** Limpa sessão ao sair */
 function limparSessao() {
     sessionStorage.removeItem('fos_token');
     sessionStorage.removeItem('fos_usuario');
@@ -100,8 +79,7 @@ function limparSessao() {
     app.estantes = [];
 }
 
-
-/* ── 3. ROTEADOR SPA ─────────────────────────────────────────── */
+/* ROTEADOR SPA: seções ocultas e visíveis */
 const paginas = {
     home:   document.getElementById('pagina-home'),
     perfil: document.getElementById('pagina-perfil'),
@@ -139,29 +117,24 @@ document.addEventListener('click', e => {
     fecharDropdown();
 });
 
-
-/* ── 4. AUTH ─────────────────────────────────────────────────── */
+/* AUTH */
 const modalLogin    = document.getElementById('modal-login');
 const modalCadastro = document.getElementById('modal-cadastro');
 const loginFeedback    = document.getElementById('login-feedback');
 const cadastroFeedback = document.getElementById('cadastro-feedback');
 
-// Abrir modais
 document.getElementById('btn-abrir-login')?.addEventListener('click', () => abrirModal(modalLogin));
 document.getElementById('btn-abrir-cadastro')?.addEventListener('click', () => abrirModal(modalCadastro));
 document.getElementById('btn-cta-cadastro')?.addEventListener('click', () => abrirModal(modalCadastro));
 document.getElementById('footer-link-login')?.addEventListener('click', e => { e.preventDefault(); abrirModal(modalLogin); });
 document.getElementById('footer-link-cadastro')?.addEventListener('click', e => { e.preventDefault(); abrirModal(modalCadastro); });
 
-// Fechar modais
 document.getElementById('fechar-login')?.addEventListener('click', () => fecharModal(modalLogin));
 document.getElementById('fechar-cadastro')?.addEventListener('click', () => fecharModal(modalCadastro));
 
-// Alternar entre modais
 document.getElementById('switch-para-cadastro')?.addEventListener('click', () => alternarModal(modalLogin, modalCadastro));
 document.getElementById('switch-para-login')?.addEventListener('click', () => alternarModal(modalCadastro, modalLogin));
 
-// Fechar ao clicar fora / pressionar Escape
 document.addEventListener('click', e => {
     [modalLogin, modalCadastro, modalEditarPerfil, modalTop4].forEach(m => {
         if (m && e.target === m) fecharModal(m);
@@ -174,7 +147,6 @@ document.addEventListener('keydown', e => {
     });
 });
 
-/* ── LOGIN ── */
 document.getElementById('btn-login-submit')?.addEventListener('click', async () => {
     limparFeedback(modalLogin);
 
@@ -216,7 +188,6 @@ document.getElementById('btn-login-submit')?.addEventListener('click', async () 
     }
 });
 
-/* ── CADASTRO ── */
 document.getElementById('btn-cadastro-submit')?.addEventListener('click', async () => {
     limparFeedback(modalCadastro);
 
@@ -250,7 +221,6 @@ document.getElementById('btn-cadastro-submit')?.addEventListener('click', async 
             mostrarFeedback(cadastroFeedback, dataReg?.error || 'Não foi possível criar a conta.', 'error');
             return;
         }
-
         // Faz login automático após cadastro
         const { ok: okLogin, data: dataLogin } = await http.post(API.LOGIN, { email, password: senha });
 
@@ -293,7 +263,6 @@ document.getElementById('btn-sair')?.addEventListener('click', () => {
     navegar('home');
 });
 
-/* ── Normaliza diferentes formatos de usuário da API ── */
 function normalizarUsuario(raw) {
     return {
         id:          raw.id          ?? raw.userId,
@@ -307,7 +276,6 @@ function normalizarUsuario(raw) {
     };
 }
 
-/* ── Atualiza navbar após login/cadastro ── */
 function atualizarNavbarLogado() {
     if (!app.usuario) return;
     const { nome, nomeUsuario, avatar } = app.usuario;
@@ -337,7 +305,6 @@ function atualizarNavbarLogado() {
     document.getElementById('btn-cta-cadastro')     && (document.getElementById('btn-cta-cadastro').hidden     = true);
 }
 
-/* ── Dropdown de avatar ── */
 const navAvatarBtn = document.getElementById('nav-avatar-btn');
 const navDropdown  = document.getElementById('nav-dropdown');
 function fecharDropdown() { if (navDropdown) navDropdown.hidden = true; navAvatarBtn?.setAttribute('aria-expanded','false'); }
@@ -349,8 +316,6 @@ navAvatarBtn?.addEventListener('click', e => {
 });
 document.addEventListener('click', e => { if (!navAvatarBtn?.contains(e.target)) fecharDropdown(); });
 
-
-/* ── 5. PERFIL ───────────────────────────────────────────────── */
 const modalEditarPerfil = document.getElementById('modal-editar-perfil');
 const modalTop4         = document.getElementById('modal-top4');
 
@@ -373,7 +338,6 @@ function renderizarPerfil() {
 
     atualizarPrivacidadeUI(privado);
 }
-
 /* ── Editar banner (local preview — upload futuro via endpoint de mídia) ── */
 document.getElementById('btn-editar-banner')?.addEventListener('click', () => {
     document.getElementById('input-banner').click();
@@ -427,7 +391,6 @@ document.getElementById('input-avatar')?.addEventListener('change', async e => {
     reader.readAsDataURL(file);
 });
 
-/* ── Privacidade ── */
 document.getElementById('btn-privacidade')?.addEventListener('click', async () => {
     if (!app.usuario) return;
     app.usuario.privado = !app.usuario.privado;
@@ -466,7 +429,6 @@ function atualizarPrivacidadeUI(privado) {
     }
 }
 
-/* ── Modal editar perfil ── */
 document.getElementById('btn-editar-perfil')?.addEventListener('click', () => {
     if (!app.usuario) return;
     document.getElementById('edit-nome').value = app.usuario.nome || '';
@@ -512,7 +474,6 @@ document.getElementById('btn-salvar-perfil')?.addEventListener('click', async ()
     }
 });
 
-/* ── Modal Top 4 ── */
 document.getElementById('btn-editar-top4')?.addEventListener('click', () => {
     popularModalTop4();
     abrirModal(modalTop4);
@@ -556,7 +517,6 @@ async function popularModalTop4() {
     });
 }
 
-/* ── Tabs da estante ── */
 document.querySelectorAll('.estante-tab').forEach(tab => {
     tab.addEventListener('click', () => {
         document.querySelectorAll('.estante-tab').forEach(t => t.classList.remove('active'));
@@ -566,7 +526,6 @@ document.querySelectorAll('.estante-tab').forEach(tab => {
     });
 });
 
-/* ── Carrega estantes do usuário logado ── */
 async function carregarEstantesDoUsuario() {
     if (!app.usuario?.id) return;
     try {
@@ -584,7 +543,6 @@ async function carregarEstantesDoUsuario() {
     }
 }
 
-/** Renderiza itens de uma aba específica da estante */
 function renderizarEstante(statusFiltro) {
     const container = document.getElementById('estante-itens-container');
     if (!container) return;
@@ -627,7 +585,6 @@ function renderizarEstante(statusFiltro) {
     });
 }
 
-/** Remove item da estante */
 async function removerItemEstante(itemId) {
     if (!confirm('Remover esta fanfic da estante?')) return;
     try {
@@ -645,7 +602,6 @@ async function removerItemEstante(itemId) {
     }
 }
 
-/** Abre um prompt simples para editar status/capítulo/nota (pode ser substituído por modal) */
 async function abrirEdicaoItem(itemId) {
     const capituloStr = prompt('Capítulo atual (deixe em branco para manter):');
     const notaStr     = prompt('Nota de 1 a 5 (deixe em branco para manter):');
@@ -667,7 +623,6 @@ async function abrirEdicaoItem(itemId) {
     }
 }
 
-/** Exibe estatísticas simples de leitura no perfil */
 function renderizarStatsLeitura() {
     const totalEl = document.getElementById('stats-total-lidas');
     if (!totalEl) return;
@@ -684,10 +639,6 @@ function renderizarStatsLeitura() {
     document.getElementById('stats-favs')   && (document.getElementById('stats-favs').textContent   = totalFavs);
 }
 
-
-/* ── 6. FANFIC ───────────────────────────────────────────────── */
-
-/** Formulário de adição de fanfic via URL (scraping automático) */
 document.getElementById('btn-adicionar-fanfic')?.addEventListener('click', async () => {
     const urlInput = document.getElementById('input-url-fanfic');
     const url      = urlInput?.value.trim();
@@ -716,7 +667,6 @@ document.getElementById('btn-adicionar-fanfic')?.addEventListener('click', async
     }
 });
 
-/** Seleciona estante e adiciona item */
 async function adicionarFanficNaEstante(fanfic) {
     if (!app.usuario?.id) return;
     if (!app.estantes.length) await carregarEstantesDoUsuario();
@@ -744,7 +694,6 @@ async function adicionarFanficNaEstante(fanfic) {
     await carregarEstantesDoUsuario();
 }
 
-/** Busca de fanfics — GET /fanfic/search?q=...&plataforma=... */
 document.getElementById('btn-buscar-fanfic')?.addEventListener('click', buscarFanfics);
 document.getElementById('input-busca-fanfic')?.addEventListener('keydown', e => {
     if (e.key === 'Enter') buscarFanfics();
@@ -800,18 +749,10 @@ function renderizarResultadosBusca(resultados) {
     });
 }
 
-
-/* ── 7. FEED ─────────────────────────────────────────────────── */
-
-/** Carrega o feed (atividades dos usuários seguidos) */
 async function carregarFeed() {
-    // O backend atual não tem rota de feed explícita.
-    // Placeholder: exibe itens das estantes dos usuários seguidos (expansão futura).
-    // Por ora, o feed estático do HTML permanece ativo.
     console.info('[FOS] Feed: endpoint de atividades ainda não implementado no backend.');
 }
 
-/* Curtir — placeholder para quando a rota de posts existir */
 document.querySelectorAll('.feed-acao-btn[data-acao="curtir"]').forEach(btn => {
     btn.addEventListener('click', () => {
         const curtido  = btn.classList.toggle('curtido');
@@ -824,7 +765,6 @@ document.querySelectorAll('.feed-acao-btn[data-acao="curtir"]').forEach(btn => {
     });
 });
 
-/* Comentar */
 document.querySelectorAll('.feed-acao-btn[data-acao="comentar"]').forEach(btn => {
     btn.addEventListener('click', () => {
         const id   = btn.dataset.id;
@@ -873,7 +813,6 @@ function enviarComentario(postId) {
     // TODO: POST /posts/:id/comments { texto }
 }
 
-/* ── Seguir usuário → POST /seguir / DELETE /seguir ── */
 document.querySelectorAll('.btn-seguir').forEach(btn => {
     btn.addEventListener('click', async () => {
         if (!app.usuario) { abrirModal(modalLogin); return; }
@@ -898,10 +837,6 @@ document.querySelectorAll('.btn-seguir').forEach(btn => {
     });
 });
 
-
-/* ── 8. HELPERS ──────────────────────────────────────────────── */
-
-/* Modal */
 function abrirModal(modal) {
     if (!modal) return;
     modal.classList.add('active');
@@ -916,7 +851,6 @@ function fecharModal(modal) {
 }
 function alternarModal(fechar, abrir) { fecharModal(fechar); setTimeout(() => abrirModal(abrir), 150); }
 
-/* Feedback inline (dentro de modal) */
 function mostrarFeedback(el, msg, tipo) { if (!el) return; el.textContent = msg; el.className = `form-feedback show ${tipo}`; }
 function limparFeedback(modal) {
     modal?.querySelectorAll('.form-feedback').forEach(el => { el.className = 'form-feedback'; el.textContent = ''; });
@@ -924,7 +858,6 @@ function limparFeedback(modal) {
 }
 function marcarInvalido(id) { document.getElementById(id)?.classList.add('invalid'); }
 
-/* Feedback global (toast / banner fora de modal) */
 function mostrarFeedbackGlobal(msg, tipo = 'info') {
     let toast = document.getElementById('fos-toast');
     if (!toast) {
@@ -941,7 +874,6 @@ function mostrarFeedbackGlobal(msg, tipo = 'info') {
     toast._to = setTimeout(() => { toast.style.opacity = '0'; }, 3500);
 }
 
-/* Loading */
 function setLoading(btn, loading) {
     if (!btn) return;
     btn.disabled = loading;
@@ -951,7 +883,6 @@ function setLoading(btn, loading) {
     if (s) s.hidden = !loading;
 }
 
-/* Mostrar/ocultar senha */
 document.querySelectorAll('.toggle-password').forEach(btn => {
     btn.addEventListener('click', () => {
         const input = document.getElementById(btn.dataset.target);
@@ -960,18 +891,14 @@ document.querySelectorAll('.toggle-password').forEach(btn => {
     });
 });
 
-/* Remove 'invalid' ao digitar */
 document.addEventListener('input', e => {
     if (e.target.matches('.modal-box input')) e.target.classList.remove('invalid');
 });
 
-/* XSS guard */
 function escapeHtml(str) {
     return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-
-/* ── INICIALIZAÇÃO ───────────────────────────────────────────── */
 (function init() {
     restaurarSessao();                   // tenta restaurar JWT do sessionStorage
     if (app.usuario) {
