@@ -24,7 +24,7 @@ const API = {
     SEGUIR: '/seguir',
 };
 
-/** função dela é anexar o seu "crachá de acesso" (Token) em toda requisição que precisa de segurança para comprovar q o usuario esta logado */
+/** Cracha de acesso = toda chamada protegida já recebe o token para ter acesso autorizado*/
 function authHeaders() {
     const token = sessionStorage.getItem('fos_token');
     const h = { 'Content-Type': 'application/json' };
@@ -57,7 +57,7 @@ let app = {
     estantes: [],        
 };
 
-/** Restaura sessão do sessionStorage (JWT + dados do usuário) */
+/** recupera ao recarregar a pag */
 function restaurarSessao() {
     const token    = sessionStorage.getItem('fos_token');
     const raw      = sessionStorage.getItem('fos_usuario');
@@ -67,6 +67,7 @@ function restaurarSessao() {
     } catch { /* sessão corrompida, ignora */ }
 }
 
+/** salva token e os dados */
 function persistirSessao(token, usuario) {
     sessionStorage.setItem('fos_token',   token);
     sessionStorage.setItem('fos_usuario', JSON.stringify(usuario));
@@ -895,12 +896,13 @@ document.addEventListener('input', e => {
     if (e.target.matches('.modal-box input')) e.target.classList.remove('invalid');
 });
 
+// garante q o conteudo seja tratado como texto puro e não como marcação HTML = proteção ao XSS: Cross-Site Scripting
 function escapeHtml(str) {
     return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 (function init() {
-    restaurarSessao();                   // tenta restaurar JWT do sessionStorage
+    restaurarSessao(); // tenta restaurar JWT do sessionStorage = n perder oq foi salvo naquela pag
     if (app.usuario) {
         atualizarNavbarLogado();
         renderizarPerfil();
