@@ -1,11 +1,11 @@
 import 'dotenv/config';
 import request from 'supertest';
-import app from './src/server'; // ajuste o caminho se necessário
+import { app } from './src/server';; 
 
 describe('Auth API', () => {
   const userData = {
-    email: 'testeautomatizado@example.com',
-    username: 'testeuserautomatizado',
+    email: 'testeapresentacao@example.com',
+    username: 'usuarioapresentacao',
     password: 'Senha123!',
     termos_aceitos: true
   };
